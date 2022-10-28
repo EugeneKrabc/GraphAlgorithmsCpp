@@ -28,15 +28,21 @@ S21Matrix DotFormatHandler::GetMatrixFromFile(std::string filename) {
 
 void DotFormatHandler::WriteMatrixToFile(S21Matrix &matrix,
                                          std::string filename) {
-    std::ofstream file(filename);
+    std::ofstream file(filename)
+    if (!file.is_open()) {
+        file.close();
+        throw std::invalid_argument("Wrong path to the file!");
+    }
     file << matrix.get_rows() << std::endl;
-    for (int i = 0; i < matrix.get_rows(); i++) {
-        for (int j = 0; j < matrix.get_cols(); j++) {
+    for (int i = 0; i < matrix.get_cols(); i++) {
+        for (int j = 0; j < matrix.get_rows(); j++) {
             file << matrix(i, j);
-            if (j < matrix.get_cols() - 1)
+            if (j < matrix.get_rows() - 1)
                 file << ',';
         }
-        file << std::endl;
+        if (i < matrix.get_rows() - 1)
+            file << std::endl;
     }
+    file.close();
 }
 } // namespace s21
