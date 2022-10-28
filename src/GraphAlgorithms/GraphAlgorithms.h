@@ -2,7 +2,6 @@
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_GRAPHALGORITHMS_H
 
 #include <vector>
-#include <unordered_set>
 #include "../Graph/Graph.h"
 #include "../DataStructures/Stack/Stack.h"
 #include "../DataStructures/Queue/Queue.h"
@@ -34,7 +33,7 @@ class GraphAlgorithms {
  private:
     void debug_print_vector(std::vector<int> vector);
     void debug_print_stack(Stack stack);
-    void debug_print_set(std::unordered_set<int> set);
+
 };
 }  // namespace s21
 
