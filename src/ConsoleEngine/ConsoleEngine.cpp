@@ -16,9 +16,9 @@ namespace s21 {
           }
 
           if (answer == 1) {
-              matrix_ = dot_format_handler_.GetMatrixFromFile(read_path_);
+              graph_.GetMatrixFromFile(read_path_);
           } else if (answer == 2) {
-              dot_format_handler_.WriteMatrixToFile(matrix_, write_path_);
+              graph_.WriteMatrixToFile(write_path_);
           } else if (answer == 3) {
               cout << "Not implemented\n";
           } else if (answer == 4) {
