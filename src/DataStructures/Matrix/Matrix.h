@@ -1,7 +1,3 @@
-//
-// Created by Curran Carr on 10/28/22.
-//
-
 #ifndef A2_SIMPLENAVIGATOR_V1_0_0_MASTER_S21_MATRIX_OOP_H
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_S21_MATRIX_OOP_H
 

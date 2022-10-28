@@ -1,12 +1,11 @@
-//
-// Created by Curran Carr on 10/28/22.
-//
-
 #ifndef A2_SIMPLENAVIGATOR_V1_0_0_MASTER_DOTFORMATHANDLER_H
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_DOTFORMATHANDLER_H
 
 #include "../DataStructures/Matrix/Matrix.h"
 #include <string>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 namespace s21 {
 

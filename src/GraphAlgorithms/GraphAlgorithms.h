@@ -1,7 +1,3 @@
-//
-// Created by Curran Carr on 10/27/22.
-//
-
 #ifndef A2_SIMPLENAVIGATOR_V1_0_0_MASTER_GRAPHALGORITHMS_H
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_GRAPHALGORITHMS_H
 
@@ -16,6 +12,11 @@ namespace s21 {
 struct TsmResult {
     std::vector<int> vertices;
     double distance;
+};
+
+enum Status {
+    Unvisited = 0,
+    Visited = 1
 };
 
 class GraphAlgorithms {
