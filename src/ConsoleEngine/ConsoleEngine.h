@@ -3,7 +3,6 @@
 
 #include <iostream>
 
-#include "../DotFormatHandler/DotFormatHandler.h"
 #include "../Graph/Graph.h"
 #include "../GraphAlgorithms/GraphAlgorithms.h"
 
@@ -17,9 +16,8 @@ namespace s21 {
         void start();
 
     private:
-        DotFormatHandler dot_format_handler_;
+        Graph graph_;
         std::string read_path_, write_path_;
-        S21Matrix matrix_;
 
         std::string menu_options_ = ("Menu options:\n"
                                      "\t 1. Load graph from a file.\n"
