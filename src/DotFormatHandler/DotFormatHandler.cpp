@@ -28,7 +28,7 @@ S21Matrix DotFormatHandler::GetMatrixFromFile(std::string filename) {
 
 void DotFormatHandler::WriteMatrixToFile(S21Matrix &matrix,
                                          std::string filename) {
-    std::ofstream file(filename)
+    std::ofstream file(filename);
     if (!file.is_open()) {
         file.close();
         throw std::invalid_argument("Wrong path to the file!");
