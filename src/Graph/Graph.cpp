@@ -43,4 +43,8 @@ void Graph::WriteMatrixToFile(std::string filename) {
     }
     file.close();
 }
+
+const S21Matrix& Graph::GetMatrix() const {
+    return matrix_;
+}
 } // namespace s21

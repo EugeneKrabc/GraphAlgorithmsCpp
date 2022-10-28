@@ -13,6 +13,8 @@ class Graph {
     void WriteMatrixToFile(std::string filename);
     void GetMatrixFromFile(std::string filename);
 
+    const S21Matrix& GetMatrix() const;
+
 private:
     S21Matrix matrix_;
 };
