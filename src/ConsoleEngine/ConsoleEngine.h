@@ -21,9 +21,3 @@ class ConsoleEngine {
 }
 
 #endif //A2_SIMPLENAVIGATOR_V1_0_0_MASTER_CONSOLEENGINE_H
-git init
-git add README.md
-        git commit -m "first commit"
-git branch -M main
-git remote add origin git@github.com:EugeneKrabc/GraphAlgorithmsCpp.git
-        git push -u origin main
