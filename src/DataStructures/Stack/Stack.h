@@ -11,6 +11,7 @@ class Stack {
     void push(const int value);
     int pop();
     int peek() const;
+    bool empty() const;
 
  private:
     Stack();

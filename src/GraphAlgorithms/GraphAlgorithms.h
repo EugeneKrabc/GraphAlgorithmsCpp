@@ -2,8 +2,8 @@
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_GRAPHALGORITHMS_H
 
 #include <vector>
+#include <unordered_set>
 #include "../Graph/Graph.h"
-#include "../DataStructures/Matrix/Matrix.h"
 #include "../DataStructures/Stack/Stack.h"
 #include "../DataStructures/Queue/Queue.h"
 
@@ -15,13 +15,13 @@ struct TsmResult {
 };
 
 enum Status {
-    Unvisited = 0,
-    Visited = 1
+    WRONG_VERTEX_NUMBER = -1,
+    EMPTY_GRAPH_ERROR = -2
 };
 
 class GraphAlgorithms {
  public:
-    std::vector<int> DepthFirstSearch(Graph &graph);
+    std::vector<int> DepthFirstSearch(Graph &graph, int start_vertex);
     std::vector<int> BreadthFirstSearch(Graph &graph, int startVertex);
 
     int GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2);
@@ -32,7 +32,9 @@ class GraphAlgorithms {
     TsmResult SolveTravelingSalesmanProblem(Graph &graph);
 
  private:
-
+    void debug_print_vector(std::vector<int> vector);
+    void debug_print_stack(Stack stack);
+    void debug_print_set(std::unordered_set<int> set);
 };
 }  // namespace s21
 

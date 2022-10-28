@@ -16,4 +16,7 @@ int Stack::pop() {
 
 int Stack::peek() const { return stack_.top(); }
 
+bool Stack::empty() const {
+    return stack_.empty();
+}
 } // namespace s21

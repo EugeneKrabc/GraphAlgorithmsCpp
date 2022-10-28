@@ -2,6 +2,10 @@
 
 namespace s21 {
 
+Graph::Graph() {
+    matrix_ = S21Matrix();
+}
+
 void Graph::GetMatrixFromFile(std::string filename) {
   std::fstream file(filename);
   if (!file) {
@@ -44,7 +48,7 @@ void Graph::WriteMatrixToFile(std::string filename) {
     file.close();
 }
 
-const S21Matrix& Graph::GetMatrix() const {
+S21Matrix& Graph::GetMatrix() {
     return matrix_;
 }
 } // namespace s21

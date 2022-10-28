@@ -10,10 +10,11 @@ namespace s21 {
 
 class Graph {
  public:
+    Graph();
     void WriteMatrixToFile(std::string filename);
     void GetMatrixFromFile(std::string filename);
 
-    const S21Matrix& GetMatrix() const;
+    S21Matrix& GetMatrix();
 
 private:
     S21Matrix matrix_;
