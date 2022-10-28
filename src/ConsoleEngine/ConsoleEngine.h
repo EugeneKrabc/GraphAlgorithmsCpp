@@ -18,7 +18,7 @@ class ConsoleEngine {
 
 private:
     DotFormatHandler dot_format_handler_;
-    std::string path_;
+    std::string read_path_, write_path_;
     S21Matrix matrix_;
 };
 
