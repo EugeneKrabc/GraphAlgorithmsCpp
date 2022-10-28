@@ -17,10 +17,9 @@ class ConsoleEngine {
     void start();
 
 private:
-    DotFormatHandler handle_shoulders_;
-
-    void ReadDotFile();
-    void WriteToFile();
+    DotFormatHandler dot_format_handler_;
+    std::string path_;
+    S21Matrix matrix_;
 };
 
 }
