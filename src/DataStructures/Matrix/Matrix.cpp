@@ -18,9 +18,9 @@ void S21Matrix::allocate_matrix(int rows, int cols) {
     throw "Matrix creation error: Rows and columns must be greater than zero";
   _rows = rows;
   _cols = cols;
-  _matrix = new double *[_rows];
+  _matrix = new int *[_rows];
   for (int i = 0; i < rows; i++)
-    _matrix[i] = new double[cols]();
+    _matrix[i] = new int[cols]();
 }
 
 void S21Matrix::copy_matrix_elements(const S21Matrix &other) {
@@ -58,7 +58,7 @@ bool S21Matrix::eq_matrix(const S21Matrix &other) const {
     result = false;
   for (int i = 0; i < _rows && result; i++)
     for (int j = 0; j < _cols && result; j++)
-      if (fabs(_matrix[i][j] - other._matrix[i][j]) > EPSILON)
+      if (_matrix[i][j] == other._matrix[i][j])
         result = false;
   return result;
 }
@@ -79,7 +79,7 @@ void S21Matrix::sub_matrix(const S21Matrix &other) {
       _matrix[i][j] -= other._matrix[i][j];
 }
 
-void S21Matrix::mul_number(const double num) {
+void S21Matrix::mul_number(const int num) {
   for (int i = 0; i < _rows; i++)
     for (int j = 0; j < _cols; j++)
       _matrix[i][j] *= num;
@@ -103,60 +103,6 @@ S21Matrix S21Matrix::transpose() {
   for (int i = 0; i < result._rows; i++)
     for (int j = 0; j < result._cols; j++)
       result(i, j) = (*this)(j, i);
-  return result;
-}
-
-S21Matrix S21Matrix::get_minor(int i, int j) {
-  S21Matrix result(_rows - 1, _cols - 1);
-  for (int r = 0, k = 0; r < _rows; r++) {
-    if (r == i)
-      continue;
-    for (int c = 0, m = 0; c < _cols; c++) {
-      if (c == j)
-        continue;
-      result(k, m) = (*this)(r, c);
-      m++;
-    }
-    k++;
-  }
-  return result;
-}
-
-double S21Matrix::determinant() {
-  if (_rows != _cols)
-    throw "Determinant error: Matrix is not square";
-  double result = 0;
-  if (_cols == 2) {
-    result = ((*this)(0, 0) * (*this)(1, 1)) - ((*this)(0, 1) * (*this)(1, 0));
-  } else if (_cols > 2) {
-    for (int i = 0; i < _cols; i++) {
-      double tmp = get_minor(0, i).determinant() * (*this)(0, i);
-      int sign = (i % 2 == 0) ? 1 : -1;
-      result += tmp * sign;
-    }
-  } else {
-    result = (*this)(0, 0);
-  }
-  return result;
-}
-
-S21Matrix S21Matrix::calc_complements() {
-  S21Matrix result(_rows, _cols);
-  for (int i = 0; i < _rows; i++)
-    for (int j = 0; j < _cols; j++)
-      result(i, j) = get_minor(i, j).determinant() * pow(-1.0, i + j);
-  return result;
-}
-
-S21Matrix S21Matrix::inverse_matrix() {
-  double det = determinant();
-  if (fabs(det - 0) <= EPSILON)
-    throw "Inverse error: Matrix determinant is 0";
-  S21Matrix result = calc_complements().transpose();
-  result.mul_number(1.0 / fabs(det));
-  for (int i = 0; i < result._rows; i++)
-    for (int j = 0; j < result._cols; j++)
-      result(i, j) *= -1;
   return result;
 }
 
@@ -197,7 +143,7 @@ void S21Matrix::operator-=(const S21Matrix &other) { sub_matrix(other); }
 
 void S21Matrix::operator*=(const S21Matrix &other) { mul_matrix(other); }
 
-double &S21Matrix::operator()(const int i, const int j) {
+int &S21Matrix::operator()(const int i, const int j) {
   if (i >= _rows || i < 0 || j >= _cols || j < 0)
     throw "Error. Trying to access non-existent element";
   return _matrix[i][j];

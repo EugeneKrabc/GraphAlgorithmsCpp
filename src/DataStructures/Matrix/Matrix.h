@@ -10,7 +10,7 @@ namespace s21 {
 class S21Matrix {
  private:
     int _rows, _cols;
-    double **_matrix;
+    int **_matrix;
 
     void destroy_matrix();
     void allocate_matrix(int rows, int cols);
@@ -32,14 +32,10 @@ class S21Matrix {
     bool eq_matrix(const S21Matrix &other) const;
     void sum_matrix(const S21Matrix &other);
     void sub_matrix(const S21Matrix &other);
-    void mul_number(const double num);
+    void mul_number(const int num);
     void mul_matrix(const S21Matrix &other);
 
     S21Matrix transpose();
-    S21Matrix get_minor(int i, int j);
-    S21Matrix calc_complements();
-    double determinant();
-    S21Matrix inverse_matrix();
 
     S21Matrix operator+(const S21Matrix &other);
     S21Matrix operator-(const S21Matrix &other);
@@ -49,7 +45,7 @@ class S21Matrix {
     void operator+=(const S21Matrix &other);
     void operator-=(const S21Matrix &other);
     void operator*=(const S21Matrix &other);
-    double &operator()(const int i, const int j);
+    int &operator()(const int i, const int j);
 };
 
 }

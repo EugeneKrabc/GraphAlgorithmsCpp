@@ -9,9 +9,18 @@
 
 namespace s21 {
 
+using std::cout;
+using std::cin;
+
 class ConsoleEngine {
  public:
     void start();
+
+private:
+    DotFormatHandler handle_shoulders_;
+
+    void ReadDotFile();
+    void WriteToFile();
 };
 
 }
