@@ -1,5 +1,22 @@
-//
-// Created by Curran Carr on 10/28/22.
-//
-
 #include "ConsoleEngine.h"
+#include "../DotFormatHandler/DotFormatHandler.h"
+
+namespace s21 {
+
+void ConsoleEngine::start() {
+  int answer = 0;
+    read_path_ = "/Users/violette/Desktop/GraphAlgorithmsCPP/src/DotFiles/example.dot";
+  write_path_ = "/Users/violette/Desktop/GraphAlgorithmsCPP/src/DotFiles/test.dot";
+  while (true) {
+    cout << "Choice:\n";
+    cin >> answer;
+    if (answer == 1)
+        matrix_ = dot_format_handler_.GetMatrixFromFile(read_path_);
+    else if (answer == 2)
+        dot_format_handler_.WriteMatrixToFile(matrix_, write_path_);
+    else
+      break;
+  }
+}
+
+} // namespace s21
