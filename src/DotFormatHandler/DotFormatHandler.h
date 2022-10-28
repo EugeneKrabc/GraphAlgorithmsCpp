@@ -11,7 +11,7 @@ namespace s21 {
 
 class DotFormatHandler {
  public:
-    void WriteMatrixToFile(const S21Matrix &matrix, std::string filename);
+    void WriteMatrixToFile(S21Matrix &matrix, std::string filename);
     S21Matrix GetMatrixFromFile(std::string filename);
 };
 

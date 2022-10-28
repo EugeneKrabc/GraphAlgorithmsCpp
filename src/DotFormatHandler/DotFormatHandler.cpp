@@ -26,7 +26,7 @@ S21Matrix DotFormatHandler::GetMatrixFromFile(std::string filename) {
   return dot_format;
 }
 
-void DotFormatHandler::WriteMatrixToFile(const S21Matrix &matrix,
+void DotFormatHandler::WriteMatrixToFile(S21Matrix &matrix,
                                          std::string filename) {
     std::ofstream file(filename);
     file << matrix.get_rows() << std::endl;
