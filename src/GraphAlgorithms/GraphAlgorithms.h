@@ -35,6 +35,8 @@ private:
     void debug_print_vector(std::vector<int> vector);
     void debug_print_stack(Stack stack);
     void debug_print_set(std::unordered_set<int> set);
+
+    int big_number_ = 1000000;
 };
 }  // namespace s21
 

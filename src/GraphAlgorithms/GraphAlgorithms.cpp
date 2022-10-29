@@ -62,13 +62,12 @@ void GraphAlgorithms::debug_print_set(std::unordered_set<int> set) {
 
 int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2) {
     std::vector<int> pos, node, parent;
-    int big_number = std::numeric_limits<int>::max();
     int size = graph.GetMatrix().get_rows();
     pos.resize(size);
     node.resize(size);
     parent.resize(size);
     for (int i = 0; i < size; ++i) {
-        pos[i] = big_number;
+        pos[i] = big_number_;
         node[i] = 0;
         parent[i] = -1;
     }
@@ -76,7 +75,7 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, i
     int min = 0, index_min = 0;
     pos[vertex1 - 1] = 0;
     for (int i = 0; i < size; ++i) {
-        min = big_number;
+        min = big_number_;
         for (int j = 0; j < size; ++j) {
             if (!node[j] && pos[j] < min) {
                 min = pos[j];
@@ -85,7 +84,7 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, i
         }
         node[index_min] = 1;
         for (int j = 0; j < size; ++j) {
-            if (!node[j] && graph.GetMatrix()(index_min, j) && pos[index_min] != big_number &&
+            if (!node[j] && graph.GetMatrix()(index_min, j) && pos[index_min] != big_number_ &&
                 pos[index_min] + graph.GetMatrix()(index_min, j) < pos[j]) {
                 pos[j] = pos[index_min] + graph.GetMatrix()(index_min, j);
                 parent[j] = index_min;
@@ -102,12 +101,43 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, i
     return pos[vertex2 - 1];
 }
 
+S21Matrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(Graph &graph) {
+    S21Matrix return_matrix(graph.GetMatrix());
+    for (int i = 0; i < return_matrix.get_rows(); ++i) {
+        for (int j = 0; j < return_matrix.get_cols(); ++j) {
+            if (return_matrix(i, j) == 0)
+                return_matrix(i, j) = big_number_;
+        }
+    }
+    for (int k = 0; k < return_matrix.get_rows(); ++k) {
+        for (int i = 0; i < return_matrix.get_rows(); ++i) {
+            for (int j = 0; j < return_matrix.get_cols(); ++j) {
+                return_matrix(i, j) =
+                    std::min(return_matrix(i, j), return_matrix(i, k) + return_matrix(k, j));
+            }
+        }
+    }
+    for (int i = 0; i < return_matrix.get_rows(); ++i) {
+        for (int j = 0; j < return_matrix.get_cols(); ++j) {
+            if (return_matrix(i, j) == big_number_)
+                return_matrix(i, j) = 0;
+        }
+    }
+    return return_matrix;
+}
+
 }  // namespace s21
 
 // int main() {
 //     s21::Graph graph;
 //     graph.GetMatrixFromFile("/Users/pilafber/Projects/2/src/DotFiles/graph");
 //     s21::GraphAlgorithms graph_algs;
-//     graph_algs.GetShortestPathBetweenVertices(graph, 1, 4);
+//     s21::S21Matrix return_matrix = graph_algs.GetShortestPathsBetweenAllVertices(graph);
+//     for (int i = 0; i < return_matrix.get_rows(); ++i) {
+//         for (int j = 0; j < return_matrix.get_cols(); ++j) {
+//             std::cout << return_matrix(i, j) << " ";
+//         }
+//         std::cout << std::endl;
+//     }
 //     return 0;
 // }
