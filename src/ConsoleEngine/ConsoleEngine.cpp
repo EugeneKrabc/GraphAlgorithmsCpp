@@ -61,9 +61,9 @@ int ConsoleEngine::RequestNmbFromUser(std::string message) {
 }
 
 void ConsoleEngine::PrintResult(std::vector<int> result) {
-    if (result.at(0) == -1) {
+    if (result.at(0) == WRONG_VERTEX_NUMBER) {
         cout << "Invalid start vertex number.";
-    } else if (result.at(0) == -2) {
+    } else if (result.at(0) == EMPTY_GRAPH_ERROR) {
         cout << "You should load graph from file first(Menu option 1)";
     } else {
         cout << "Result: ";
