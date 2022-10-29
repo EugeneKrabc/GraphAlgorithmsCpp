@@ -1,4 +1,15 @@
-graph aboba {
+graph DotFiles/aboba.dot {
+    a;
+    b;
+    c;
+    d;
+    e;
+    f;
+    g;
+    h;
+    i;
+    j;
+    k;
     a -- b;
     a -- c;
     a -- d;

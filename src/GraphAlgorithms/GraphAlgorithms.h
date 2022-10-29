@@ -1,10 +1,7 @@
 #ifndef A2_SIMPLENAVIGATOR_V1_0_0_MASTER_GRAPHALGORITHMS_H
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_GRAPHALGORITHMS_H
 
-#include <limits>
-#include <unordered_set>
 #include <vector>
-#include <algorithm>
 
 #include "../DataStructures/Queue/Queue.h"
 #include "../DataStructures/Stack/Stack.h"
@@ -19,10 +16,7 @@ struct TsmResult {
 
 enum Status { WRONG_VERTEX_NUMBER = -1, EMPTY_GRAPH_ERROR = -2 };
 
-enum SearchType {
-    DepthFirstSearch = 1,
-    BreadthFirstSearch = 2
-};
+enum SearchType { DepthFirstSearch = 1, BreadthFirstSearch = 2 };
 
 class GraphAlgorithms {
 public:
@@ -40,7 +34,6 @@ private:
     void debug_print_vector(std::vector<int> vector);
     void debug_print_stack(Stack stack);
     std::vector<int> SearchAlgo(Graph &graph, int start_vertex, SearchType search_type);
-
     int big_number_ = 1000000;
 };
 }  // namespace s21

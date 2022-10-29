@@ -1,25 +1,26 @@
 #include "GraphAlgorithms.h"
 
+
 namespace s21 {
 
 std::vector<int> GraphAlgorithms::DepthFirstSearch(Graph &graph, int start_vertex) {
     std::vector<int> result = std::vector<int>();
     if (graph.GetMatrix().get_cols() == 0) {
         result.push_back(EMPTY_GRAPH_ERROR);
+        return result;
     }
-    S21Matrix &matrix = graph.GetMatrix();
+    S21Matrix& matrix = graph.GetMatrix();
     if (start_vertex > matrix.get_cols() || start_vertex <= 0) {
         result.push_back(WRONG_VERTEX_NUMBER);
         return result;
     }
 
-    std::unordered_set<int> visited = std::unordered_set<int>();
+    std::vector<bool> visited = std::vector<bool>(matrix.get_cols() + 1, false);
     Stack stack = Stack::init();
     stack.push(start_vertex);
 
     while (!stack.empty()) {
         int current_vertex = stack.pop();
-
         if (!visited[current_vertex]) {
             result.push_back(current_vertex);
             visited[current_vertex] = true;
@@ -119,14 +120,6 @@ void GraphAlgorithms::debug_print_stack(Stack stack) {
     printf("\n");
 }
 
-void GraphAlgorithms::debug_print_set(std::unordered_set<int> set) {
-    printf("Visited: ");
-    for (auto it = set.begin(); it != set.end(); it++) {
-        printf("%d ", *it);
-    }
-    printf("\n");
-}
-
 int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2) {
     std::vector<int> pos, node, parent;
     int size = graph.GetMatrix().get_rows();
@@ -166,8 +159,7 @@ S21Matrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(Graph &graph) {
     S21Matrix return_matrix(graph.GetMatrix());
     for (int i = 0; i < return_matrix.get_rows(); ++i) {
         for (int j = 0; j < return_matrix.get_cols(); ++j) {
-            if (return_matrix(i, j) == 0)
-                return_matrix(i, j) = big_number_;
+            if (return_matrix(i, j) == 0) return_matrix(i, j) = big_number_;
         }
     }
     for (int k = 0; k < return_matrix.get_rows(); ++k) {
@@ -180,11 +172,48 @@ S21Matrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(Graph &graph) {
     }
     for (int i = 0; i < return_matrix.get_rows(); ++i) {
         for (int j = 0; j < return_matrix.get_cols(); ++j) {
-            if (return_matrix(i, j) == big_number_)
-                return_matrix(i, j) = 0;
+            if (return_matrix(i, j) == big_number_) return_matrix(i, j) = 0;
         }
     }
     return return_matrix;
 }
+
+S21Matrix GraphAlgorithms::GetLeastSpanningTree(Graph &graph) {
+    int size = graph.GetMatrix().get_rows();
+    S21Matrix return_matrix(size, size), tmp_matrix(graph.GetMatrix());
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            if (tmp_matrix(i, j) == 0) tmp_matrix(i, j) = big_number_;
+            return_matrix(i, j) = 0;
+        }
+    }
+    std::vector<bool> visited;
+    visited.resize(size);
+    for (int i = 0; i < size; ++i) {
+        visited[i] = false;
+    }
+    visited[0] = true;
+    for (int h = 1; h < size; ++h) {
+        int min_weight = big_number_;
+        std::pair<int, int> adding_edge;
+        for (int i = 0; i < size; ++i) {
+            if (visited[i]) {
+                for (int j = 0; j < size; ++j) {
+                    if (!visited[j] && !return_matrix(i, j) && tmp_matrix(i, j) < min_weight) {
+                        min_weight = tmp_matrix(i, j);
+                        adding_edge.first = i;
+                        adding_edge.second = j;
+                    }
+                }
+            }
+        }
+        visited[adding_edge.second] = true;
+        return_matrix(adding_edge.first, adding_edge.second) = min_weight;
+        return_matrix(adding_edge.second, adding_edge.first) = min_weight;
+        
+    }
+    return return_matrix;
+}
+
 
 }  // namespace s21
