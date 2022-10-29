@@ -2,6 +2,7 @@
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_GRAPHALGORITHMS_H
 
 #include <vector>
+#include <set>
 #include "../Graph/Graph.h"
 #include "../DataStructures/Stack/Stack.h"
 #include "../DataStructures/Queue/Queue.h"
@@ -11,11 +12,17 @@ namespace s21 {
 struct TsmResult {
     std::vector<int> vertices;
     double distance;
+
+    TsmResult(std::vector<int> path, double distance) {
+        this->distance = distance;
+        vertices = path;
+    }
 };
 
 enum Status {
     WRONG_VERTEX_NUMBER = -1,
-    EMPTY_GRAPH_ERROR = -2
+    EMPTY_GRAPH_ERROR = -2,
+    OUT_OF_RANGE = -3
 };
 
 class GraphAlgorithms {
@@ -25,15 +32,22 @@ class GraphAlgorithms {
 
     int GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2);
     S21Matrix GetShortestPathsBetweenAllVertices(Graph &graph);
-
     S21Matrix GetLeastSpanningTree(Graph &graph);
-
     TsmResult SolveTravelingSalesmanProblem(Graph &graph);
 
  private:
+    ////////////////////////////////////////////////////////////////
+    // TSM-related stuff
+    S21Matrix pheromones_, pheromones_delta_, event_;
+
+    int GetNextNode(S21Matrix &matrix, int cur_pos, std::set<int> visited);
+    double GetEventPossibility(S21Matrix &matrix, int rows, int cols, std::set<int> nodes);
+    void ApplyDeltaToPheromones(S21Matrix &matrix);
+    double GetQConst(S21Matrix &matrix);
+    ////////////////////////////////////////////////////////////////
+
     void debug_print_vector(std::vector<int> vector);
     void debug_print_stack(Stack stack);
-
 };
 }  // namespace s21
 

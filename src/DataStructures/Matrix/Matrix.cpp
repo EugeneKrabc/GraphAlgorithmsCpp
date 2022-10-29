@@ -13,14 +13,22 @@ void S21Matrix::destroy_matrix() {
   _cols = 0;
 }
 
+void S21Matrix::FillWithDigit(const double digit) {
+    for (int i = 0; i < _rows; i++) {
+        for (int j = 0; j < _cols; j++) {
+            _matrix[i][j] = digit;
+        }
+    }
+}
+
 void S21Matrix::allocate_matrix(int rows, int cols) {
   if (rows < 0 || cols < 0)
     throw "Matrix creation error: Rows and columns must be greater than zero";
   _rows = rows;
   _cols = cols;
-  _matrix = new int *[_rows];
+  _matrix = new double *[_rows];
   for (int i = 0; i < rows; i++)
-    _matrix[i] = new int[cols]();
+    _matrix[i] = new double[cols]();
 }
 
 void S21Matrix::copy_matrix_elements(const S21Matrix &other) {
@@ -79,7 +87,7 @@ void S21Matrix::sub_matrix(const S21Matrix &other) {
       _matrix[i][j] -= other._matrix[i][j];
 }
 
-void S21Matrix::mul_number(const int num) {
+void S21Matrix::mul_number(const double num) {
   for (int i = 0; i < _rows; i++)
     for (int j = 0; j < _cols; j++)
       _matrix[i][j] *= num;
@@ -143,7 +151,7 @@ void S21Matrix::operator-=(const S21Matrix &other) { sub_matrix(other); }
 
 void S21Matrix::operator*=(const S21Matrix &other) { mul_matrix(other); }
 
-int &S21Matrix::operator()(const int i, const int j) {
+double &S21Matrix::operator()(const int i, const int j) {
   if (i >= _rows || i < 0 || j >= _cols || j < 0)
     throw "Error. Trying to access non-existent element";
   return _matrix[i][j];

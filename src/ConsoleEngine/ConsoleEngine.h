@@ -18,12 +18,12 @@ namespace s21 {
 
     private:
         Graph graph_;
-        GraphAlgorithms graph_algorithms;
+        GraphAlgorithms graph_algorithms_;
         std::string read_path_, write_path_;
 
         int RequestNmbFromUser(std::string message);
-        void PrintResult(std::vector<int> result);
-
+        void PrintDFS(std::vector<int> result);
+        void PrintTSM(TsmResult result);
 
         std::string menu_options_ = ("Menu options:\n"
                                      "\t 1. Load graph from a file.\n"
