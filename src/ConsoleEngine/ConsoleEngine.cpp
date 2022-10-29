@@ -29,7 +29,8 @@ void ConsoleEngine::start() {
             PrintResult(graph_algorithms.DepthFirstSearch(graph_,
                     RequestNmbFromUser("Enter start vertex: ")));
         } else if (answer == 3) {
-            cout << "Not implemented\n";
+            PrintResult(graph_algorithms.BreadthFirstSearch(graph_,
+                    RequestNmbFromUser("Enter start vertex: ")));
         } else if (answer == 4) {
             cout << "Not implemented\n";
         } else if (answer == 5) {

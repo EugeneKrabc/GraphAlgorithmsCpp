@@ -18,10 +18,15 @@ enum Status {
     EMPTY_GRAPH_ERROR = -2
 };
 
+enum SearchType {
+    DepthFirstSearch = 1,
+    BreadthFirstSearch = 2
+};
+
 class GraphAlgorithms {
  public:
     std::vector<int> DepthFirstSearch(Graph &graph, int start_vertex);
-    std::vector<int> BreadthFirstSearch(Graph &graph, int startVertex);
+    std::vector<int> BreadthFirstSearch(Graph &graph, int start_vertex);
 
     int GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2);
     S21Matrix GetShortestPathsBetweenAllVertices(Graph &graph);
@@ -33,6 +38,7 @@ class GraphAlgorithms {
  private:
     void debug_print_vector(std::vector<int> vector);
     void debug_print_stack(Stack stack);
+    std::vector<int> SearchAlgo(Graph &graph, int start_vertex, SearchType search_type);
 
 };
 }  // namespace s21

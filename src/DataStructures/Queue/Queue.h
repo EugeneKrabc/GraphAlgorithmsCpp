@@ -11,6 +11,7 @@ class Queue {
     void push(int value);
     int pop();
     int peek() const;
+    bool empty() const;
 
  private:
     Queue();
