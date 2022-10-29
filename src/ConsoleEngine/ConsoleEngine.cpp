@@ -48,11 +48,16 @@ void ConsoleEngine::start() {
 }
 
 int ConsoleEngine::RequestNmbFromUser(std::string message) {
-    int input = 0;
+    std::string input;
     cout << message;
     cin >> input;
-    cin.clear();
-    return input;
+    int nmb;
+    try {
+        nmb = std::stoi(input);
+    } catch (std::invalid_argument exp) {
+        nmb = 0;
+    }
+    return nmb;
 }
 
 void ConsoleEngine::PrintResult(std::vector<int> result) {
