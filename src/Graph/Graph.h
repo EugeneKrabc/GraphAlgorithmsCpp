@@ -13,6 +13,7 @@ class Graph {
     Graph();
     void WriteMatrixToFile(std::string filename);
     void GetMatrixFromFile(std::string filename);
+    void ExportGraphToDot(std::string filename);
 
     S21Matrix& GetMatrix();
 
