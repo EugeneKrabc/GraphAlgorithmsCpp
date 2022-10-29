@@ -1,4 +1,4 @@
-graph DotFiles/aboba {
+graph aboba {
     a;
     b;
     c;

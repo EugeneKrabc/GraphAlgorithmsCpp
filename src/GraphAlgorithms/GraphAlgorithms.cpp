@@ -92,12 +92,6 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, i
         }
     }
 
-    // вывод пути
-    // std::vector<int> temp;
-    // for (int i = vertex2 - 1; i != -1; i = parent[i]) temp.push_back(i + 1);
-    // std::reverse(temp.begin(), temp.end());
-    // for (int i = 0; i < temp.size(); ++i) std::cout << temp[i] << " ";
-    // std::cout << std::endl;
     return pos[vertex2 - 1];
 }
 
@@ -127,17 +121,3 @@ S21Matrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(Graph &graph) {
 }
 
 }  // namespace s21
-
-// int main() {
-//     s21::Graph graph;
-//     graph.GetMatrixFromFile("/Users/pilafber/Projects/2/src/DotFiles/graph");
-//     s21::GraphAlgorithms graph_algs;
-//     s21::S21Matrix return_matrix = graph_algs.GetShortestPathsBetweenAllVertices(graph);
-//     for (int i = 0; i < return_matrix.get_rows(); ++i) {
-//         for (int j = 0; j < return_matrix.get_cols(); ++j) {
-//             std::cout << return_matrix(i, j) << " ";
-//         }
-//         std::cout << std::endl;
-//     }
-//     return 0;
-// }

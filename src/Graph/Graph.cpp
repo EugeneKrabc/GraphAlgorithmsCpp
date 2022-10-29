@@ -46,7 +46,7 @@ void Graph::WriteMatrixToFile(std::string filename) {
 S21Matrix& Graph::GetMatrix() { return matrix_; }
 
 void Graph::ExportGraphToDot(std::string filename) {
-    std::ofstream file("../DotFiles/" + filename);
+    std::ofstream file(filename);
     int start_j = 0;
     file << "graph " << filename << " {" << std::endl;
     for (int i = 0; i < matrix_.get_rows(); ++i) {
@@ -61,5 +61,6 @@ void Graph::ExportGraphToDot(std::string filename) {
         }
     }
     file << "}";
+    file.close();
 }
 }  // namespace s21
