@@ -29,7 +29,8 @@ void ConsoleEngine::start() {
             PrintResult(graph_algorithms.DepthFirstSearch(graph_,
                     RequestNmbFromUser("Enter start vertex: ")));
         } else if (answer == 3) {
-            cout << "Not implemented\n";
+            PrintResult(graph_algorithms.BreadthFirstSearch(graph_,
+                    RequestNmbFromUser("Enter start vertex: ")));
         } else if (answer == 4) {
             cout << "Not implemented\n";
         } else if (answer == 5) {
@@ -48,17 +49,22 @@ void ConsoleEngine::start() {
 }
 
 int ConsoleEngine::RequestNmbFromUser(std::string message) {
-    int input = 0;
+    std::string input;
     cout << message;
     cin >> input;
-    cin.clear();
-    return input;
+    int nmb;
+    try {
+        nmb = std::stoi(input);
+    } catch (std::invalid_argument exp) {
+        nmb = 0;
+    }
+    return nmb;
 }
 
 void ConsoleEngine::PrintResult(std::vector<int> result) {
-    if (result.at(0) == -1) {
+    if (result.at(0) == WRONG_VERTEX_NUMBER) {
         cout << "Invalid start vertex number.";
-    } else if (result.at(0) == -2) {
+    } else if (result.at(0) == EMPTY_GRAPH_ERROR) {
         cout << "You should load graph from file first(Menu option 1)";
     } else {
         cout << "Result: ";

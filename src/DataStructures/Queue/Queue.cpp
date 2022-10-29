@@ -16,4 +16,8 @@ int Queue::pop() {
 
 int Queue::peek() const { return queue_.front(); }
 
+bool Queue::empty() const {
+    return queue_.empty();
+}
+
 } // namespace s21
