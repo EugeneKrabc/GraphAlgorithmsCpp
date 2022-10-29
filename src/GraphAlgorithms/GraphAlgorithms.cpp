@@ -26,7 +26,7 @@ std::vector<int> GraphAlgorithms::DepthFirstSearch(Graph &graph, int start_verte
             visited[current_vertex] = true;
         }
         visited[current_vertex] = true;
-        for (int i = 0; i < matrix.get_cols(); i++) {
+        for (int i = matrix.get_cols() - 1; i >= 0; i--) {
             if (matrix(current_vertex - 1, i) && !visited[i + 1]) {
                 stack.push(i + 1);
             }
