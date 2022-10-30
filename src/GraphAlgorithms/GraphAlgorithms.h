@@ -2,9 +2,9 @@
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_GRAPHALGORITHMS_H
 
 #include <vector>
-#include "../Graph/Graph.h"
-#include "../DataStructures/Stack/Stack.h"
 #include "../DataStructures/Queue/Queue.h"
+#include "../DataStructures/Stack/Stack.h"
+#include "../Graph/Graph.h"
 #include "../DataStructures/AbstractList.h"
 
 namespace s21 {
@@ -14,18 +14,12 @@ struct TsmResult {
     double distance;
 };
 
-enum Status {
-    WRONG_VERTEX_NUMBER = -1,
-    EMPTY_GRAPH_ERROR = -2
-};
+enum Status { WRONG_VERTEX_NUMBER = -1, EMPTY_GRAPH_ERROR = -2 };
 
-enum SearchType {
-    DepthFirstSearch = 1,
-    BreadthFirstSearch = 2
-};
+enum SearchType { DepthFirstSearch = 1, BreadthFirstSearch = 2 };
 
 class GraphAlgorithms {
- public:
+public:
     std::vector<int> DepthFirstSearch(Graph &graph, int start_vertex);
     std::vector<int> BreadthFirstSearch(Graph &graph, int start_vertex);
 
@@ -36,13 +30,13 @@ class GraphAlgorithms {
 
     TsmResult SolveTravelingSalesmanProblem(Graph &graph);
 
- private:
+private:
     AbstractList *list;
     void debug_print_vector(std::vector<int> vector);
     void debug_print_stack(Stack stack);
     std::vector<int> SearchAlgo(Graph &graph, int start_vertex, SearchType search_type);
-
+    int big_number_ = 1000000;
 };
 }  // namespace s21
 
-#endif //A2_SIMPLENAVIGATOR_V1_0_0_MASTER_GRAPHALGORITHMS_H
+#endif  // A2_SIMPLENAVIGATOR_V1_0_0_MASTER_GRAPHALGORITHMS_H

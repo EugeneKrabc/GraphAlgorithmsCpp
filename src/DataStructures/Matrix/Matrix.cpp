@@ -58,7 +58,7 @@ bool S21Matrix::eq_matrix(const S21Matrix &other) const {
     result = false;
   for (int i = 0; i < _rows && result; i++)
     for (int j = 0; j < _cols && result; j++)
-      if (_matrix[i][j] == other._matrix[i][j])
+      if (_matrix[i][j] != other._matrix[i][j])
         result = false;
   return result;
 }
