@@ -5,6 +5,7 @@
 #include "../Graph/Graph.h"
 #include "../DataStructures/Stack/Stack.h"
 #include "../DataStructures/Queue/Queue.h"
+#include "../DataStructures/AbstractList.h"
 
 namespace s21 {
 
@@ -36,6 +37,7 @@ class GraphAlgorithms {
     TsmResult SolveTravelingSalesmanProblem(Graph &graph);
 
  private:
+    AbstractList *list;
     void debug_print_vector(std::vector<int> vector);
     void debug_print_stack(Stack stack);
     std::vector<int> SearchAlgo(Graph &graph, int start_vertex, SearchType search_type);

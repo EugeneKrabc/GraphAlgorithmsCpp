@@ -1,13 +1,14 @@
 #ifndef A2_SIMPLENAVIGATOR_V1_0_0_MASTER_QUEUE_H
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_QUEUE_H
 
+#include "../AbstractList.h"
 #include "queue"  // TEMPORARY
 
 namespace s21 {
 
-class Queue {
+class Queue: public AbstractList {
  public:
-    static Queue init();
+    static Queue* init();
     void push(int value);
     int pop();
     int peek() const;

@@ -2,9 +2,9 @@
 
 namespace s21 {
 
-Queue::Queue() { queue_ = std::queue<int>(); }
+Queue::Queue() : AbstractList() { queue_ = std::queue<int>(); }
 
-Queue Queue::init() { return Queue(); }
+Queue* Queue::init() { return new Queue(); }
 
 void Queue::push(int value) { queue_.push(value); }
 

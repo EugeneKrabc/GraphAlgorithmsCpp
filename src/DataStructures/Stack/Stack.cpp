@@ -2,9 +2,9 @@
 
 namespace s21 {
 
-Stack::Stack() { stack_ = std::stack<int>(); }
+Stack::Stack() : AbstractList() { stack_ = std::stack<int>(); }
 
-Stack Stack::init() { return Stack(); }
+Stack* Stack::init() { return new Stack(); }
 
 void Stack::push(const int value) { stack_.push(value); }
 
