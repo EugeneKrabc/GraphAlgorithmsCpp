@@ -41,11 +41,11 @@ class GraphAlgorithms {
     S21Matrix pheromones_, pheromones_delta_, event_;
     double max_length_;
 
+    void GetFullPath(S21Matrix &matrix);
     int GetNextNode(S21Matrix &matrix, int cur_pos, std::set<int> &visited);
     double GetEventPossibility(S21Matrix &matrix, int rows, int cols, std::set<int> &nodes);
     void ApplyDeltaToPheromones(S21Matrix &matrix);
     void IncreaseDelta(S21Matrix &matrix, int path_of_cur, const double Q, std::vector<int> &visited);
-    double GetQConst(S21Matrix &matrix);
     double LastPositiveEvent(std::vector<double> &event_vec, int j);
     ////////////////////////////////////////////////////////////////
 

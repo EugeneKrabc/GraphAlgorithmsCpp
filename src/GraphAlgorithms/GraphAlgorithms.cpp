@@ -9,7 +9,6 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
     if (length < 2) {
         return TsmResult({}, Status::OUT_OF_RANGE);
     }
-//    const double Q = GetQConst(matrix);
     const double Q = 10.0;
     pheromones_ = pheromones_delta_ = event_ = S21Matrix(length, length);
     for (int i = 0; i < matrix.get_rows(); i++) {
@@ -19,7 +18,7 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
             }
         }
     }
-    for (size_t iteration = 0; iteration < 1; iteration++) {
+    for (size_t iteration = 0; iteration < 20; iteration++) {
         if (iteration > 0) {
             ApplyDeltaToPheromones(matrix);
         }
@@ -50,14 +49,56 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
 //            }
 //            std::cout << "\n";
         }
+        std::cout << "?\n";
+        GetFullPath(matrix);
+//        std::vector<int> visited;
+//        int cur_pos = 0, cur_path = 0;
+//        while (visited.size() < matrix.get_rows()) {
+//            int max_pheromone = -1;
+//            for (int i = 0; i < matrix.get_cols(); i++) {
+//                if (pheromones_(cur_pos, i) != 0 && (true) &&
+//                    (max_pheromone == -1 || pheromones_(cur_pos, i) > pheromones_(cur_pos, max_pheromone))) {
+//                    max_pheromone = i;
+//                }
+//            }
+//            visited.push_back(max_pheromone);
+//            cur_path += matrix(cur_pos, max_pheromone);
+//            cur_pos = max_pheromone;
+//        }
+//        std::cout << cur_path << "\n";
     }
-//    for (int )
     for (int i = 0; i < matrix.get_rows(); i++) {
         for (int j = 0; j < matrix.get_cols(); j++) {
-            printf("%.4f\t", pheromones_delta_(i, j));
+            printf("%.1f\t\t", pheromones_(i, j));
         }
         std::cout << "\n";
     }
+}
+
+void GraphAlgorithms::GetFullPath(S21Matrix &matrix) {
+    int cur_path = 0;
+
+    std::set<int> visited;
+    S21Matrix available(matrix.get_cols(), matrix.get_cols());
+    for (int i = 0; i < matrix.get_rows(); i++) {
+        for (int j = 0; j < matrix.get_cols(); j++) {
+            available(i, j) = 1.0;
+        }
+    }
+    visited.insert(0);
+    while (visited.size() < matrix.get_cols()) {
+        int cur_pos = 0, max = -1;
+        for (int i = 0; i < matrix.get_cols(); i++) {
+            if (pheromones_(cur_pos, i) > 0 && (max == -1 || pheromones_(cur_pos, i) > pheromones_(cur_pos, max))) {
+                max = i;
+            }
+        }
+        cur_path += matrix(cur_pos, max);
+        cur_pos = max;
+        visited.insert(max);
+        std::cout << visited.size() << std::endl;
+    }
+    std::cout << cur_path << "\n";
 }
 
 void GraphAlgorithms::IncreaseDelta(S21Matrix &matrix, int path_of_cur, const double Q, std::vector<int> &visited) {
@@ -124,18 +165,6 @@ double GraphAlgorithms::GetEventPossibility(S21Matrix &matrix, int rows, int col
             }
         }
         return ind;
-    }
-
-    double GraphAlgorithms::GetQConst(S21Matrix &matrix) {
-        double min = -1.0;
-        for (int i = 0; i < matrix.get_rows(); i++) {
-            for (int j = 0; j < matrix.get_cols(); j++) {
-                if (matrix(i, j) != 0.0 && (min > matrix(i, j) || min == -1.0)) {
-                    min = matrix(i, j);
-                }
-            }
-        }
-        return (min * 4.0 / 10.0);
     }
 
 // Might be useful if we're going to do the bonus part
