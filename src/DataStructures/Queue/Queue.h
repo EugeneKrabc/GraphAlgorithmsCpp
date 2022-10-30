@@ -2,7 +2,6 @@
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_QUEUE_H
 
 #include "../AbstractList.h"
-#include "queue"  // TEMPORARY
 
 namespace s21 {
 
@@ -16,7 +15,6 @@ class Queue: public AbstractList {
 
  private:
     Queue();
-    std::queue<int> queue_;  // TEMPORARY
 };
 
 }
