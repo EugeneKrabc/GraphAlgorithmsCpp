@@ -14,4 +14,4 @@ clang_style:
 	clang-format -i $(SOURCES)
 
 clean:
-	rm -rf app.out test.out app.out.dSYM
+	rm -rf app.out tests.out app.out.dSYM tests.out.DSYM

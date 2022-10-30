@@ -8,7 +8,7 @@ using namespace s21;
 TEST(PartOneTests, DFS) {
     Graph graph;
     GraphAlgorithms graph_algorithms;
-    graph.GetMatrixFromFile("DotFiles/DFS1.txt");
+    graph.GetMatrixFromFile("DotFiles/DFS1.dot");
     std::vector<int> result = graph_algorithms.DepthFirstSearch(graph, 1);
     int expected_values[] = {1, 2, 3, 5, 4};
     EXPECT_EQ(result.size(), 5);
@@ -23,12 +23,32 @@ TEST(PartOneTests, DFS) {
     result = graph_algorithms.DepthFirstSearch(empty_graph, 2);
     EXPECT_EQ(result.at(0), -2);
 
-    graph.GetMatrixFromFile("DotFiles/DFS2.txt");
+    graph.GetMatrixFromFile("DotFiles/DFS2.dot");
     result = graph_algorithms.DepthFirstSearch(graph, 3);
     int expected_values2[] = {3, 1, 2, 4};
     EXPECT_EQ(result.size(), 4);
     for (int i = 0; i < 4; i++) {
         EXPECT_EQ(result[i], expected_values2[i]);
+    }
+
+    graph.GetMatrixFromFile("DotFiles/TreeGraph.dot");
+    result = graph_algorithms.DepthFirstSearch(graph, 1);
+    int expected_values3[] = {1, 2, 5, 9, 10, 6, 3, 4, 7, 11, 12, 8};
+    EXPECT_EQ(result.size(), 12);
+    for (int i = 0; i < 12; i++) {
+        EXPECT_EQ(result[i], expected_values3[i]);
+    }
+}
+
+TEST(PartOneTests, BFS) {
+    Graph graph;
+    GraphAlgorithms graph_algorithms;
+    graph.GetMatrixFromFile("DotFiles/TreeGraph.dot");
+    std::vector<int> result = graph_algorithms.BreadthFirstSearch(graph, 1);
+    int expected_values3[] = {1,4, 3, 2, 8,7, 6, 5, 12, 11, 10, 9};
+    EXPECT_EQ(result.size(), 12);
+    for (int i = 0; i < 12; i++) {
+        EXPECT_EQ(result[i], expected_values3[i]);
     }
 }
 
