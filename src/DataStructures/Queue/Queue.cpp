@@ -2,22 +2,46 @@
 
 namespace s21 {
 
-Queue::Queue() : AbstractList() { queue_ = std::queue<int>(); }
-
-Queue* Queue::init() { return new Queue(); }
-
-void Queue::push(int value) { queue_.push(value); }
-
-int Queue::pop() {
-  int ret = queue_.front();
-  queue_.pop();
-  return ret;
+Queue::Queue() : AbstractList() {
+    head_ = nullptr;
 }
 
-int Queue::peek() const { return queue_.front(); }
+Queue* Queue::init() {
+    return new Queue();
+}
+
+void Queue::push(int value) {
+    if (head_ == nullptr) {
+        head_ = create(value, nullptr);
+    } else {
+        node *tmp = head_;
+        while (tmp->next != nullptr) {
+            tmp = tmp->next;
+        }
+        tmp->next = create(value, nullptr);
+    }
+}
+
+int Queue::pop() {
+    if (head_ == nullptr) {
+        throw "Pop from empty queue";
+    }
+    int ret = head_->value;
+    node *tmp = head_;
+    head_ = head_->next;
+    delete tmp;
+    return ret;
+}
+
+int Queue::peek() const {
+    if (head_ == nullptr) {
+        throw "Peek from empty queue";
+    }
+    return head_->value;
+}
 
 bool Queue::empty() const {
-    return queue_.empty();
+    return head_ == nullptr;
 }
 
 } // namespace s21

@@ -2,7 +2,6 @@
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_STACK_H
 
 #include "../AbstractList.h"
-#include "stack"  // TEMPORARY
 
 namespace s21 {
 
@@ -16,7 +15,6 @@ class Stack: public AbstractList {
 
  private:
     Stack();
-    std::stack<int> stack_;  // TEMPORARY
 
 };
 
