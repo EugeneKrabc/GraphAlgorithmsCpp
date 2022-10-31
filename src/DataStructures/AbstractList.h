@@ -5,6 +5,7 @@
 
 
 namespace s21 {
+
 class AbstractList {
 
  public:
@@ -29,6 +30,7 @@ class AbstractList {
         return result;
     }
 };
+
 }
 
 
