@@ -1,20 +1,20 @@
 #ifndef A2_SIMPLENAVIGATOR_V1_0_0_MASTER_QUEUE_H
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_QUEUE_H
 
-#include "queue"  // TEMPORARY
+#include "../AbstractList.h"
 
 namespace s21 {
 
-class Queue {
+class Queue: public AbstractList {
  public:
-    static Queue init();
+    static Queue* init();
     void push(int value);
     int pop();
     int peek() const;
+    bool empty() const;
 
  private:
     Queue();
-    std::queue<int> queue_;  // TEMPORARY
 };
 
 }

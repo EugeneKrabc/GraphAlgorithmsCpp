@@ -1,13 +1,13 @@
 #ifndef A2_SIMPLENAVIGATOR_V1_0_0_MASTER_STACK_H
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_STACK_H
 
-#include "stack"  // TEMPORARY
+#include "../AbstractList.h"
 
 namespace s21 {
 
-class Stack {
+class Stack: public AbstractList {
  public:
-    static Stack init();
+    static Stack* init();
     void push(const int value);
     int pop();
     int peek() const;
@@ -15,7 +15,6 @@ class Stack {
 
  private:
     Stack();
-    std::stack<int> stack_;  // TEMPORARY
 
 };
 

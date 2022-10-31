@@ -66,7 +66,7 @@ bool S21Matrix::eq_matrix(const S21Matrix &other) const {
     result = false;
   for (int i = 0; i < _rows && result; i++)
     for (int j = 0; j < _cols && result; j++)
-      if (_matrix[i][j] == other._matrix[i][j])
+      if (_matrix[i][j] != other._matrix[i][j])
         result = false;
   return result;
 }
@@ -151,9 +151,11 @@ void S21Matrix::operator-=(const S21Matrix &other) { sub_matrix(other); }
 
 void S21Matrix::operator*=(const S21Matrix &other) { mul_matrix(other); }
 
-double &S21Matrix::operator()(const int i, const int j) {
-  if (i >= _rows || i < 0 || j >= _cols || j < 0)
-    throw "Error. Trying to access non-existent element";
+int &S21Matrix::operator()(const int i, const int j) {
+  if (i >= _rows || i < 0 || j >= _cols || j < 0) {
+      printf("Out of bounds i = %d, j = %d\n", i, j);
+      exit(1);
+  }
   return _matrix[i][j];
 }
 

@@ -22,8 +22,13 @@ namespace s21 {
         std::string read_path_, write_path_;
 
         int RequestNmbFromUser(std::string message);
+
         void PrintDFS(std::vector<int> result);
         void PrintTSM(TsmResult result);
+        
+        void PrintResult(std::vector<int> result);
+        void PrintResultMatrix(S21Matrix result);
+
 
         std::string menu_options_ = ("Menu options:\n"
                                      "\t 1. Load graph from a file.\n"
