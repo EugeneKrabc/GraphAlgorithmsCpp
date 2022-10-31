@@ -9,7 +9,6 @@
 #include "BranchAndBoundAlgorithmForTSM/TSMBranchAndBoundSolver.h"
 
 namespace s21 {
-
 struct TsmResult {
     std::vector<int> vertices;
     double distance;
