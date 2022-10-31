@@ -95,7 +95,30 @@ TEST(PartThreeTests, GetLeastSpanningTree) {
     EXPECT_TRUE(tmp_matrix == expected_matrix);
 }
 
+//TEST(TSMSolverTest, BranchAndBoundMethod) {
+//    Graph graph;
+//    GraphAlgorithms graph_algorithms;
+//    graph.GetMatrixFromFile("DotFiles/TSM6x6.txt");
+//    TsmResult result = graph_algorithms.SolveTSMBranchAndBoundMethod(graph);
+//    int expected_vertices[] = {1, 3, 5, 2, 6, 4};
+//    EXPECT_DOUBLE_EQ(result.distance, 82.0);
+//    for (int i = 0; i < 6; i ++) {
+//        EXPECT_EQ(expected_vertices[i], result.vertices[i]);
+//    }
+//
+//}
+
 int main(int argc, char* argv[]) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    Graph graph;
+    GraphAlgorithms graph_algorithms;
+    graph.GetMatrixFromFile("DotFiles/TSM6x6.txt");
+    TsmResult result = graph_algorithms.SolveTSMBranchAndBoundMethod(graph);
+    printf("Length = %lf\n", result.distance);
+    for (int i = 0; i < result.vertices.size(); i ++) {
+        printf("%d ", result.vertices[i]);
+    }
+    printf("\n");
+//    testing::InitGoogleTest(&argc, argv);
+//    return RUN_ALL_TESTS();
+    return 0;
 }
