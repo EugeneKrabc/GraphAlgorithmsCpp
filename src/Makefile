@@ -9,7 +9,7 @@ demo:
 
 test:
 	$(FLAGS) -lgtest $(SOURCES) Tests/tests.cpp -o tests.out
-	./tests.out
+	CK_FORKS=no leaks -atExit -- ./tests.out
 
 clang_style:
 	clang-format -i $(SOURCES)
