@@ -23,7 +23,7 @@ void TSMBranchAndBoundSolver::CopyToFinal(std::vector<int> curr_path) {
     for (int i = 0 ; i < curr_path.size(); i++) {
         final_path_[i] = curr_path[i] + 1;
     }
-    final_path_[nmb_of_graph_] = curr_path[0];
+    final_path_[nmb_of_graph_] = curr_path[0] + 1;
 }
 
 int TSMBranchAndBoundSolver::FirstMin(S21Matrix adj, int i) {
