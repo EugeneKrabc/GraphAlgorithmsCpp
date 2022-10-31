@@ -6,6 +6,7 @@
 #include "../DataStructures/Stack/Stack.h"
 #include "../Graph/Graph.h"
 #include "../DataStructures/AbstractList.h"
+#include "BranchAndBoundAlgorithmForTSM/TSMBranchAndBoundSolver.h"
 
 namespace s21 {
 struct TsmResult {
@@ -28,6 +29,7 @@ public:
     S21Matrix GetLeastSpanningTree(Graph &graph);
 
     TsmResult SolveTravelingSalesmanProblem(Graph &graph);
+    TsmResult SolveTSMBranchAndBoundMethod(Graph &graph);
 
 private:
     AbstractList *list;
@@ -35,6 +37,8 @@ private:
     void debug_print_stack(Stack stack);
     std::vector<int> SearchAlgo(Graph &graph, int start_vertex, SearchType search_type);
     int big_number_ = 1000000;
+
+    TSMBranchAndBoundSolver *branch_and_bound_solver;
 };
 }  // namespace s21
 

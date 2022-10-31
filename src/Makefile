@@ -1,6 +1,7 @@
 FLAGS = g++ -g -std=c++17 -Wall -Wextra #-Werror
 SOURCES = Graph/*.cpp GraphAlgorithms/*.cpp DataStructures/Matrix/*.cpp \
-			DataStructures/Stack/*.cpp DataStructures/Queue/*.cpp ConsoleEngine/ConsoleEngine.cpp
+			DataStructures/Stack/*.cpp DataStructures/Queue/*.cpp ConsoleEngine/ConsoleEngine.cpp \
+			GraphAlgorithms/BranchAndBoundAlgorithmForTSM/*.cpp
 
 demo:
 	$(FLAGS) $(SOURCES) ConsoleEngine/main.cpp -o app.out

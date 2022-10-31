@@ -2,6 +2,7 @@
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_S21_MATRIX_OOP_H
 
 #include <cmath>
+#include <cstdio>
 
 namespace s21 {
 
