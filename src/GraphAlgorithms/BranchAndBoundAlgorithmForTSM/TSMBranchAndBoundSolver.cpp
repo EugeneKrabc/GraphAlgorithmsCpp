@@ -21,7 +21,7 @@ std::vector<int> TSMBranchAndBoundSolver::GetFinalPath() {
 
 void TSMBranchAndBoundSolver::CopyToFinal(std::vector<int> curr_path) {
     for (int i = 0 ; i < curr_path.size(); i++) {
-        final_path_[i] = curr_path[i];
+        final_path_[i] = curr_path[i] + 1;
     }
     final_path_[nmb_of_graph_] = curr_path[0];
 }
@@ -55,8 +55,8 @@ int TSMBranchAndBoundSolver::SecondMin(S21Matrix adj, int i) {
 void TSMBranchAndBoundSolver::TSPRec(S21Matrix adj, int curr_bound, int curr_weight, int level,
                                      std::vector<int> curr_path) {
     if (level == nmb_of_graph_) {
-        if (adj(curr_path[level - 1] - 1, curr_path[0] - 1) != 0) {
-            int curr_res = curr_weight + adj(curr_path[level - 1] - 1, curr_path[0] - 1);
+        if (adj(curr_path[level - 1], curr_path[0]) != 0) {
+            int curr_res = curr_weight + adj(curr_path[level - 1], curr_path[0]);
             if (curr_res < final_res_) {
                 CopyToFinal(curr_path);
                 final_res_ = curr_res;
@@ -66,23 +66,23 @@ void TSMBranchAndBoundSolver::TSPRec(S21Matrix adj, int curr_bound, int curr_wei
     }
 
     for (int i = 0; i < nmb_of_graph_; i++) {
-        if (adj(curr_path[level - 1] - 1, i) != 0 && !visited_[i]) {
+        if (adj(curr_path[level - 1], i) != 0 && !visited_[i]) {
             int temp = curr_bound;
-            curr_weight += adj(curr_path[level - 1] - 1, i);
+            curr_weight += adj(curr_path[level - 1], i);
 
             if (level == 1) {
-                curr_bound -= ((FirstMin(adj, curr_path[level - 1] - 1) + FirstMin(adj, i))/ 2);
+                curr_bound -= ((FirstMin(adj, curr_path[level - 1]) + FirstMin(adj, i))/ 2);
             } else {
-                curr_bound -= ((SecondMin(adj, curr_path[level - 1] - 1) + FirstMin(adj, i))/ 2);
+                curr_bound -= ((SecondMin(adj, curr_path[level - 1]) + FirstMin(adj, i))/ 2);
             }
 
             if (curr_bound + curr_weight < final_res_) {
-                curr_path[level] = i + 1;
+                curr_path[level] = i;
                 visited_[i] = true;
                 TSPRec(adj, curr_bound, curr_weight, level + 1, curr_path);
             }
 
-            curr_weight -= adj(curr_path[level - 1] - 1, i);
+            curr_weight -= adj(curr_path[level - 1], i);
             curr_bound = temp;
 
             for (auto it = visited_.begin(); it != visited_.end(); it++) {
@@ -90,7 +90,7 @@ void TSMBranchAndBoundSolver::TSPRec(S21Matrix adj, int curr_bound, int curr_wei
             }
 
             for (int j = 0; j <= level - 1; j++) {
-                visited_[curr_path[j] - 1] = true;
+                visited_[curr_path[j]] = true;
             }
         }
     }
@@ -111,7 +111,7 @@ void TSMBranchAndBoundSolver::TSP(S21Matrix adj) {
     }
 
     visited_[0] = true;
-    curr_path[0] = 1;
+    curr_path[0] = 0;
 
     TSPRec(adj, curr_bound, 0, 1, curr_path);
 }

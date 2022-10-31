@@ -109,16 +109,7 @@ TEST(PartThreeTests, GetLeastSpanningTree) {
 //}
 
 int main(int argc, char* argv[]) {
-    Graph graph;
-    GraphAlgorithms graph_algorithms;
-    graph.GetMatrixFromFile("DotFiles/TSM6x6.txt");
-    TsmResult result = graph_algorithms.SolveTSMBranchAndBoundMethod(graph);
-    printf("Length = %lf\n", result.distance);
-    for (int i = 0; i < result.vertices.size(); i ++) {
-        printf("%d ", result.vertices[i]);
-    }
-    printf("\n");
-//    testing::InitGoogleTest(&argc, argv);
-//    return RUN_ALL_TESTS();
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
     return 0;
 }
