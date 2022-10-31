@@ -14,11 +14,10 @@ void ConsoleEngine::start() {
     cout << menu_options_;
 
     while (true) {
-
         std::string input;
         cin >> input;
         if (input.size() == 1 && input.at(0) >= '0' && input.at(0) <= '7') {
-          answer = stoi(input);
+            answer = stoi(input);
         }
 
         if (answer == 1) {
@@ -26,15 +25,18 @@ void ConsoleEngine::start() {
             cin >> read_path_;
             graph_.GetMatrixFromFile(read_path_);
         } else if (answer == 2) {
-            PrintResult(graph_algorithms.DepthFirstSearch(graph_,
-                    RequestNmbFromUser("Enter start vertex: ")));
+            PrintResult(graph_algorithms.DepthFirstSearch(
+                graph_, RequestNmbFromUser("Enter start vertex: ")));
         } else if (answer == 3) {
-            PrintResult(graph_algorithms.BreadthFirstSearch(graph_,
-                    RequestNmbFromUser("Enter start vertex: ")));
+            PrintResult(graph_algorithms.BreadthFirstSearch(
+                graph_, RequestNmbFromUser("Enter start vertex: ")));
         } else if (answer == 4) {
-            cout << "Not implemented\n";
+            PrintResult({graph_algorithms.GetShortestPathBetweenVertices(
+                graph_, RequestNmbFromUser("Enter start vertex: "),
+                RequestNmbFromUser("Enter end vertex: "))});
         } else if (answer == 5) {
-            cout << "Not implemented\n";
+            PrintResultMatrix(graph_algorithms.GetShortestPathsBetweenAllVertices(
+                graph_));
         } else if (answer == 6) {
             cout << "Not implemented\n";
         } else if (answer == 7) {
@@ -75,5 +77,19 @@ void ConsoleEngine::PrintResult(std::vector<int> result) {
     cout << std::endl;
 }
 
+void ConsoleEngine::PrintResultMatrix(s21::S21Matrix result) {
+    if (result.get_rows() == 0) {
+        cout << "You should load graph from file first(Menu option 1)";
+    } else {
+        cout << "Result: " << std::endl;
+        for (int i = 0; i < result.get_rows(); ++i) {
+            for (int j = 0; j < result.get_cols(); ++j) {
+                cout << result(i, j) << " ";
+            }
+            cout << std::endl;
+        }
+    }
+    cout << std::endl;
+}
 
-} // namespace s21
+}  // namespace s21
