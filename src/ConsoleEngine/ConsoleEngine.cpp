@@ -24,17 +24,17 @@ void ConsoleEngine::start() {
             cin >> read_path_;
             graph_.GetMatrixFromFile(read_path_);
         } else if (answer == 2) {
-            PrintDFS(graph_algorithms_.DepthFirstSearch(graph_,
+            PrintResultVector(graph_algorithms_.DepthFirstSearch(graph_,
                     RequestNmbFromUser("Enter start vertex: ")));
         } else if (answer == 3) {
-            PrintDFS(graph_algorithms.BreadthFirstSearch(
+            PrintResultVector(graph_algorithms_.BreadthFirstSearch(
                 graph_, RequestNmbFromUser("Enter start vertex: ")));
         } else if (answer == 4) {
-            PrintResult({graph_algorithms.GetShortestPathBetweenVertices(
+            PrintResultVector({graph_algorithms_.GetShortestPathBetweenVertices(
                 graph_, RequestNmbFromUser("Enter start vertex: "),
                 RequestNmbFromUser("Enter end vertex: "))});
         } else if (answer == 5) {
-            PrintResultMatrix(graph_algorithms.GetShortestPathsBetweenAllVertices(
+            PrintResultMatrix(graph_algorithms_.GetShortestPathsBetweenAllVertices(
                 graph_));
         } else if (answer == 6) {
             cout << "Not implemented\n";
@@ -73,7 +73,7 @@ void ConsoleEngine::PrintTSM(TsmResult result) {
     }
 }
 
-void ConsoleEngine::PrintDFS(std::vector<int> result) {
+void ConsoleEngine::PrintResultVector(std::vector<int> result) {
     if (result.at(0) == Status::WRONG_VERTEX_NUMBER) {
         cout << "Invalid start vertex number.";
     } else if (result.at(0) == Status::EMPTY_GRAPH_ERROR) {

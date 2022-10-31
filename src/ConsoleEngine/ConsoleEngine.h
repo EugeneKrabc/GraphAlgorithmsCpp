@@ -23,10 +23,8 @@ namespace s21 {
 
         int RequestNmbFromUser(std::string message);
 
-        void PrintDFS(std::vector<int> result);
+        void PrintResultVector(std::vector<int> result);
         void PrintTSM(TsmResult result);
-        
-        void PrintResult(std::vector<int> result);
         void PrintResultMatrix(S21Matrix result);
 
 
