@@ -1,6 +1,5 @@
 #include "GraphAlgorithms.h"
 
-
 namespace s21 {
 
 std::vector<int> GraphAlgorithms::DepthFirstSearch(Graph &graph, int start_vertex) {
@@ -11,13 +10,14 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(Graph &graph, int start_ver
     return SearchAlgo(graph, start_vertex, SearchType::BreadthFirstSearch);
 }
 
-std::vector<int> GraphAlgorithms::SearchAlgo(Graph &graph, int start_vertex, SearchType search_type) {
+std::vector<int> GraphAlgorithms::SearchAlgo(Graph &graph, int start_vertex,
+                                             SearchType search_type) {
     std::vector<int> result = std::vector<int>();
     if (graph.GetMatrix().get_cols() == 0) {
         result.push_back(EMPTY_GRAPH_ERROR);
         return result;
     }
-    S21Matrix& matrix = graph.GetMatrix();
+    S21Matrix &matrix = graph.GetMatrix();
     if (start_vertex > matrix.get_cols() || start_vertex <= 0) {
         result.push_back(WRONG_VERTEX_NUMBER);
         return result;
@@ -65,8 +65,9 @@ void GraphAlgorithms::debug_print_stack(Stack stack) {
 }
 
 int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2) {
-    std::vector<int> pos, node, parent;
     int size = graph.GetMatrix().get_rows();
+    if (size < 2 || vertex1 < 1 || vertex1 < 1 || vertex1 > size || vertex2 > size) return 0;
+    std::vector<int> pos, node, parent;
     pos.resize(size);
     node.resize(size);
     parent.resize(size);
@@ -100,6 +101,7 @@ int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, i
 }
 
 S21Matrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(Graph &graph) {
+    if (graph.GetMatrix().get_rows() < 2) return S21Matrix();
     S21Matrix return_matrix(graph.GetMatrix());
     for (int i = 0; i < return_matrix.get_rows(); ++i) {
         for (int j = 0; j < return_matrix.get_cols(); ++j) {
@@ -154,10 +156,8 @@ S21Matrix GraphAlgorithms::GetLeastSpanningTree(Graph &graph) {
         visited[adding_edge.second] = true;
         return_matrix(adding_edge.first, adding_edge.second) = min_weight;
         return_matrix(adding_edge.second, adding_edge.first) = min_weight;
-        
     }
     return return_matrix;
 }
-
 
 }  // namespace s21
