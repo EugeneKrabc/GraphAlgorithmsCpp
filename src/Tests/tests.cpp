@@ -73,16 +73,18 @@ TEST(PartTwoTests, GetShortestPathBetweenVertices) {
     EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 3, 8), 9);
     EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 11, 2), 12);
     EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 4, 10), 13);
+    EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 13, 14), 0);
 }
 
 TEST(PartTwoTests, GetShortestPathsBetweenAllVertices) {
-    Graph graph, graph2;
+    Graph graph, graph2, graph3;
     GraphAlgorithms graph_algorithms;
     graph.GetMatrixFromFile("DotFiles/example2.dot");
     s21::S21Matrix tmp_matrix = graph_algorithms.GetShortestPathsBetweenAllVertices(graph);
     graph2.GetMatrixFromFile("DotFiles/example3.dot");
     s21::S21Matrix expected_matrix = graph2.GetMatrix();
     EXPECT_TRUE(tmp_matrix == expected_matrix);
+    EXPECT_EQ(graph_algorithms.GetShortestPathsBetweenAllVertices(graph3), s21::S21Matrix());
 }
 
 TEST(PartThreeTests, GetLeastSpanningTree) {

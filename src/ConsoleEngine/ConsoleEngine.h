@@ -23,6 +23,7 @@ namespace s21 {
 
         int RequestNmbFromUser(std::string message);
         void PrintResult(std::vector<int> result);
+        void PrintResultMatrix(S21Matrix result);
 
 
         std::string menu_options_ = ("Menu options:\n"
