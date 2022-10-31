@@ -384,10 +384,9 @@ S21Matrix GraphAlgorithms::GetLeastSpanningTree(Graph &graph) {
 
 TsmResult GraphAlgorithms::SolveTSMBranchAndBoundMethod(Graph &graph) {
     branch_and_bound_solver = new TSMBranchAndBoundSolver(graph.GetMatrix().get_cols());
-    TsmResult result;
     branch_and_bound_solver->TSP(graph.GetMatrix());
-    result.distance = branch_and_bound_solver->GetLengthResult();
-    result.vertices = branch_and_bound_solver->GetFinalPath();
+    TsmResult result(branch_and_bound_solver->GetFinalPath(),
+                     branch_and_bound_solver->GetLengthResult());
     delete branch_and_bound_solver;
     return result;
 }
