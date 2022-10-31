@@ -4,12 +4,11 @@ namespace s21 {
 
 TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
     S21Matrix matrix = graph.GetMatrix();
-    const int length = matrix.get_cols(), ants = 200;
-    std::vector<int> ants_path(ants);
+    const int length = matrix.get_cols();
+    TsmResult shortest_path({}, -1);
     if (length < 2) {
         return TsmResult({}, Status::OUT_OF_RANGE);
     }
-    const double Q = 10.0;
     pheromones_ = pheromones_delta_ = event_ = S21Matrix(length, length);
     for (int i = 0; i < matrix.get_rows(); i++) {
         for (int j = 0; j < matrix.get_cols(); j++) {
@@ -18,91 +17,119 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
             }
         }
     }
-    for (size_t iteration = 0; iteration < 20; iteration++) {
+    for (size_t iteration = 0; iteration < 60; iteration++) {
         if (iteration > 0) {
             ApplyDeltaToPheromones(matrix);
         }
-        for (int i = 0; i < ants; i++) {
-            std::set<int> available_nodes;
-            std::vector<int> visited;
-            for (int i = 0; i < length; i++)
-                available_nodes.insert(i);
-            int current_pos = 0;
-            while (true) {
-                event_.FillWithDigit(0.0);
-                visited.push_back(current_pos);
-                available_nodes.erase(current_pos);
-                if (available_nodes.size() == 0)
-                    break;
-                for (int j = 1; j < length && available_nodes.size() > 1; j++) {
-                    if (matrix(current_pos, j) != 0.0) {
-                        event_(current_pos, j) = GetEventPossibility(matrix, current_pos, j, available_nodes);
-                    }
-                }
-                int old_pos = current_pos;
-                current_pos = GetNextNode(matrix, current_pos, available_nodes);
-                ants_path[i] += matrix(old_pos, current_pos);
-            }
-            IncreaseDelta(matrix, ants_path[i], Q, visited);
-//            for (auto iter : visited) {
-//                std::cout << iter << "\n";
-//            }
-//            std::cout << "\n";
+        TsmResult cur_path = AntColonyAlgorithm(matrix, length);
+        if (shortest_path.distance == -1.0 || cur_path.distance < shortest_path.distance) {
+            shortest_path = cur_path;
         }
-        std::cout << "?\n";
-        GetFullPath(matrix);
-//        std::vector<int> visited;
-//        int cur_pos = 0, cur_path = 0;
-//        while (visited.size() < matrix.get_rows()) {
-//            int max_pheromone = -1;
-//            for (int i = 0; i < matrix.get_cols(); i++) {
-//                if (pheromones_(cur_pos, i) != 0 && (true) &&
-//                    (max_pheromone == -1 || pheromones_(cur_pos, i) > pheromones_(cur_pos, max_pheromone))) {
-//                    max_pheromone = i;
-//                }
-//            }
-//            visited.push_back(max_pheromone);
-//            cur_path += matrix(cur_pos, max_pheromone);
-//            cur_pos = max_pheromone;
-//        }
-//        std::cout << cur_path << "\n";
     }
-    for (int i = 0; i < matrix.get_rows(); i++) {
-        for (int j = 0; j < matrix.get_cols(); j++) {
-            printf("%.1f\t\t", pheromones_(i, j));
-        }
-        std::cout << "\n";
-    }
+    return shortest_path;
 }
 
-void GraphAlgorithms::GetFullPath(S21Matrix &matrix) {
-    int cur_path = 0;
-
-    std::set<int> visited;
-    S21Matrix available(matrix.get_cols(), matrix.get_cols());
-    for (int i = 0; i < matrix.get_rows(); i++) {
-        for (int j = 0; j < matrix.get_cols(); j++) {
-            available(i, j) = 1.0;
+TsmResult GraphAlgorithms::AntColonyAlgorithm(S21Matrix &matrix, const int length) {
+    const int ants = 200;
+    for (int i = 0; i < ants; i++) {
+        std::vector<int> ants_path(ants), visited;
+        std::set<int> available_nodes;
+        for (int i = 0; i < length; i++)
+            available_nodes.insert(i);
+        int current_pos = 0;
+        while (true) {
+            event_.FillWithDigit(0.0);
+            visited.push_back(current_pos);
+            available_nodes.erase(current_pos);
+            if (available_nodes.size() == 0)
+                break;
+            for (int j = 1; j < length && available_nodes.size() > 1; j++) {
+                if (matrix(current_pos, j) != 0.0) {
+                    event_(current_pos, j) = GetEventPossibility(matrix, current_pos, j, available_nodes);
+                }
+            }
+            int old_pos = current_pos;
+            current_pos = GetNextNode(matrix, current_pos, available_nodes);
+            ants_path[i] += matrix(old_pos, current_pos);
         }
+        IncreaseDelta(matrix, ants_path[i], visited);
     }
-    visited.insert(0);
+    TsmResult cur_path = GetFullPath(matrix);
+    return GetFullPath(matrix);
+}
+
+    std::vector<int> GraphAlgorithms::GetStackWithShortestPathBetweenVertices(S21Matrix &matrix, int vertex1, int vertex2, int *length) {
+        int size = matrix.get_rows();
+        std::vector<int> pos(size), node(size), parent(size);
+        int big_number = std::numeric_limits<int>::max();
+        for (int i = 0; i < size; ++i) {
+            pos[i] = big_number;
+            node[i] = 0;
+            parent[i] = -1;
+        }
+
+        int min = 0, index_min = 0;
+        pos[vertex1 - 1] = 0;
+        for (int i = 0; i < size; ++i) {
+            min = big_number;
+            for (int j = 0; j < size; ++j) {
+                if (!node[j] && pos[j] < min) {
+                    min = pos[j];
+                    index_min = j;
+                }
+            }
+            node[index_min] = 1;
+            for (int j = 0; j < size; ++j) {
+                if (!node[j] && matrix(index_min, j) && pos[index_min] != big_number &&
+                    pos[index_min] + matrix(index_min, j) < pos[j]) {
+                    pos[j] = pos[index_min] + matrix(index_min, j);
+                    parent[j] = index_min;
+                }
+            }
+        }
+
+        std::vector<int> temp;
+        for (int i = vertex2 - 1; i != -1; i = parent[i]) {
+            temp.push_back(i);
+        }
+        *length = pos[vertex2 - 1];
+        return temp;
+    }
+
+TsmResult GraphAlgorithms::GetFullPath(S21Matrix &matrix) {
+    double cur_path = 0;
+
+    std::vector<int> visited = { 0 };
+    S21Matrix available(pheromones_);
+    int cur_pos = 0;
     while (visited.size() < matrix.get_cols()) {
-        int cur_pos = 0, max = -1;
+        int max = -1;
         for (int i = 0; i < matrix.get_cols(); i++) {
-            if (pheromones_(cur_pos, i) > 0 && (max == -1 || pheromones_(cur_pos, i) > pheromones_(cur_pos, max))) {
+            if (available(cur_pos, i) > 0.0 &&
+                (max == -1 || available(cur_pos, i) > available(cur_pos, max) ||
+                    available(i, cur_pos) > available(cur_pos, max))) {
                 max = i;
             }
         }
         cur_path += matrix(cur_pos, max);
+        available(cur_pos, max) = 0.0;
         cur_pos = max;
-        visited.insert(max);
-        std::cout << visited.size() << std::endl;
+        visited.push_back(max);
     }
-    std::cout << cur_path << "\n";
+
+    int last_path;
+    // Reversed path from last visited node to home
+    auto reversed = GetStackWithShortestPathBetweenVertices(matrix, visited.back() + 1, 1, &last_path);
+    for (int i = reversed.size() - 2; i >= 0; i--) {
+        visited.push_back(reversed[i]);
+    }
+    cur_path += last_path;
+    return {visited, cur_path};
 }
 
-void GraphAlgorithms::IncreaseDelta(S21Matrix &matrix, int path_of_cur, const double Q, std::vector<int> &visited) {
+void GraphAlgorithms::IncreaseDelta(S21Matrix &matrix, int path_of_cur, std::vector<int> &visited) {
     int last_ind = visited[0];
+    const double Q = 10.0;
     for (int i = 1; i < visited.size(); i++) {
         pheromones_delta_(last_ind, visited[i]) += Q / path_of_cur;
         last_ind = visited[i];
@@ -119,7 +146,6 @@ void GraphAlgorithms::ApplyDeltaToPheromones(S21Matrix &matrix) {
         }
     }
 }
-
 /**
  * @brief Gets an event possibility of moving to the position by rows and cols in matrix
  */
@@ -157,10 +183,10 @@ double GraphAlgorithms::GetEventPossibility(S21Matrix &matrix, int rows, int col
             }
         }
         int ind = -1;
-        double random_value = ((double)rand() / (RAND_MAX));
+        double random_value = (double)rand() / (RAND_MAX);
         for (int j = 0; j < event_vec.size(); j++) {
             if (event_vec[j] != 0.0 && (event_vec[j] > random_value &&
-                                        (ind == -1 || random_value > LastPositiveEvent(event_vec, j)))) {
+                (ind == -1 || random_value > LastPositiveEvent(event_vec, j)))) {
                 ind = j;
             }
         }

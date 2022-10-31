@@ -60,15 +60,15 @@ int ConsoleEngine::RequestNmbFromUser(std::string message) {
 }
 
 void ConsoleEngine::PrintTSM(TsmResult result) {
-//    if (result.distance == Status::OUT_OF_RANGE) {
-//        cout << "Count of vertices must be more than 1\n";
-//    } else {
-//        cout << "THe shortest path weights(expected is 75) is " << result.distance << std::endl;
-//        cout << "Order of vertices: ";
-//        for (auto iterator: result.vertices)
-//            cout << iterator << ' ';
-//        cout << std::endl;
-//    }
+    if (result.distance == Status::OUT_OF_RANGE) {
+        cout << "Count of vertices must be more than 1\n";
+    } else {
+        cout << "THe shortest path weights is " << result.distance << std::endl;
+        cout << "Order of vertices: ";
+        for (auto iterator: result.vertices)
+            cout << iterator << ' ';
+        cout << std::endl;
+    }
 }
 
 void ConsoleEngine::PrintDFS(std::vector<int> result) {
