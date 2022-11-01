@@ -14,15 +14,13 @@ void ConsoleEngine::start() {
         int answer = -1;
         std::string input;
         cin >> input;
-        cout << std::endl;
+        cout << endl;
         if (input.size() == 1 && input.at(0) >= '0' && input.at(0) <= '9') {
             answer = stoi(input);
         }
         switch (answer) {
             int start_vertex, end_vertex;
             case LOAD_GRAPH_FROM_FILE:  // 1
-                                        //                cout << "Enter path to file: ";
-                                        //                cin >> read_path_;
                 graph_.GetMatrixFromFile("DotFiles/example.txt");
                 break;
             case PERFORM_DFS:  // 2
@@ -61,7 +59,7 @@ void ConsoleEngine::start() {
             case EXIT:  // 0
                 return;
             default:
-                cout << "Invalid menu option" << std::endl;
+                cout << "Invalid menu option" << endl;
         }
     }
 }
@@ -83,11 +81,11 @@ void ConsoleEngine::PrintTSM(TsmResult result) {
     if (result.distance == Status::EMPTY_GRAPH_ERROR) {
         cout << "You should load graph from file first (Menu option 1)";
     } else {
-        cout << "The shortest path costs " << result.distance << std::endl;
+        cout << "The shortest path costs " << result.distance << endl;
         cout << "Order of vertices: ";
         for (auto iterator : result.vertices) cout << iterator << ' ';
     }
-    cout << std::endl;
+    cout << endl;
 }
 
 void ConsoleEngine::PrintResultVector(std::vector<int> result) {
@@ -101,32 +99,32 @@ void ConsoleEngine::PrintResultVector(std::vector<int> result) {
             cout << result.at(i) << " ";
         }
     }
-    cout << std::endl;
+    cout << endl;
 }
 
 void ConsoleEngine::PrintResultMatrix(s21::S21Matrix result) {
     if (result.get_rows() == 0) {
         cout << "You should load graph from file first (Menu option 1)";
     } else {
-        cout << "Result: " << std::endl;
+        cout << "Result: " << endl;
         for (int i = 0; i < result.get_rows(); ++i) {
             for (int j = 0; j < result.get_cols(); ++j) {
                 cout << result(i, j) << " ";
             }
-            cout << std::endl;
+            cout << endl;
         }
     }
-    cout << std::endl;
+    cout << endl;
 }
 
 void ConsoleEngine::ResearchTSMAlgorithmsPerformance(Graph &graph, int count) {
     if (graph.GetMatrix().get_rows() == 0) {
-        cout << "You should load graph from file first(Menu option 1)" << std::endl;
+        cout << "You should load graph from file first(Menu option 1)" << endl;
         return;
     }
 
     if (count <= 0) {
-        cout << "Invalid N" << std::endl;
+        cout << "Invalid N" << endl;
         return;
     }
 
@@ -148,17 +146,18 @@ void ConsoleEngine::ResearchTSMAlgorithmsPerformance(Graph &graph, int count) {
 
     char MethodsName[3][50] = {"Ant colony\0", "Branch and bound\0", "Brute force\0"};
 
-    cout << "Research has been started\n\n";
+    cout << "Research has been started" << endl << endl;
     for (int i = 0; i < 3; i++) {
         unsigned start_time = clock();
         for (int j = 0; j < count; j++) {
             solver[i]->GetAnswer();
         }
         unsigned solving_time = (clock() - start_time) / CLOCKS_PER_SEC;
-        printf("%s method solved TSM problem %d times in %d seconds\n", MethodsName[i], count, solving_time);
+        printf("%s method solved TSM problem %d times in %d seconds", MethodsName[i], count, solving_time);
+        cout << endl;
     }
 
-    cout << "\nResearch has been ended\n";
+    cout << endl << "Research has been ended" << endl;
 
     for (int i = 0; i < 3; i++) {
         delete solver[i];
@@ -171,9 +170,9 @@ void ConsoleEngine::PrintResultInt(int result) {
     } else if (result == Status::EMPTY_GRAPH_ERROR) {
         cout << "You should load graph from file first (Menu option 1)";
     } else {
-        cout << "Result: " << result << std::endl;
+        cout << "Result: " << result << endl;
     }
-    cout << std::endl;
+    cout << endl;
 }
 
 }  // namespace s21

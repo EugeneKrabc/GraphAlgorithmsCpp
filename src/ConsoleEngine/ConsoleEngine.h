@@ -11,6 +11,7 @@ namespace s21 {
 
 using std::cin;
 using std::cout;
+using std::endl;
 
 class ConsoleEngine {
 public:
