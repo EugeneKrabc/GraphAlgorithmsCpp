@@ -154,6 +154,7 @@ void ConsoleEngine::ResearchTSMAlgorithmsPerformance(Graph &graph, int count) {
     }
     solving_time = (clock() - start_time) / CLOCKS_PER_SEC;
     printf("Branch and bound method solved TSM problem %d times in %d seconds\n", count, solving_time);
+}
 
 void ConsoleEngine::PrintResultInt(int result) {
     if (result == Status::WRONG_VERTEX_NUMBER) {
