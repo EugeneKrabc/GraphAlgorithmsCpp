@@ -27,16 +27,18 @@ void ConsoleEngine::start() {
                 graph_.GetMatrixFromFile(read_path_);
                 break;
             case PERFORM_DFS:  // 2
-                start_vertex = RequestNmbFromUser("Enter start vertex: ");
+                if (!graph_.IsEmpty()) start_vertex = RequestNmbFromUser("Enter start vertex: ");
                 PrintResultVector(graph_algorithms_.DepthFirstSearch(graph_, start_vertex));
                 break;
             case PERFORM_BFS:  // 3
-                start_vertex = RequestNmbFromUser("Enter start vertex: ");
+                if (!graph_.IsEmpty()) start_vertex = RequestNmbFromUser("Enter start vertex: ");
                 PrintResultVector(graph_algorithms_.BreadthFirstSearch(graph_, start_vertex));
                 break;
             case FIND_SHORTEST_PATH_BETWEEN_TWO_V:  // 4
-                start_vertex = RequestNmbFromUser("Enter start vertex: ");
-                end_vertex = RequestNmbFromUser("Enter end vertex: ");
+                if (!graph_.IsEmpty()) {
+                    start_vertex = RequestNmbFromUser("Enter start vertex: ");
+                    end_vertex = RequestNmbFromUser("Enter end vertex: ");
+                }
                 PrintResultInt(
                     graph_algorithms_.GetShortestPathBetweenVertices(graph_, start_vertex, end_vertex));
                 break;
