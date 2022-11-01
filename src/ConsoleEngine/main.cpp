@@ -1,7 +1,7 @@
 #include "ConsoleEngine.h"
 
 int main() {
-  s21::ConsoleEngine engine;
-  engine.start();
-  return 0;
+    s21::ConsoleEngine engine;
+    engine.start();
+    return 0;
 }
