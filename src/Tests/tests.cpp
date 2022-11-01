@@ -117,6 +117,27 @@ TEST(TSMSolverTest, BranchAndBoundMethod) {
     }
 }
 
+TEST(TSMSolverTest, BruteForce) {
+    Graph graph;
+    GraphAlgorithms graph_algorithms;
+    graph.GetMatrixFromFile("DotFiles/TSM6x6.txt");
+    TsmResult result = graph_algorithms.SolveTSMBruteForceMethod(graph);
+    int expected_vertices[] = {1, 3, 5, 2, 6, 4, 1};
+    EXPECT_DOUBLE_EQ(result.distance, 94.0);
+    for (int i = 0; i < 7; i ++) {
+        EXPECT_EQ(expected_vertices[i], result.vertices[i]);
+    }
+
+    graph.GetMatrixFromFile("DotFiles/TSM4x4.txt");
+    result = graph_algorithms.SolveTSMBruteForceMethod(graph);
+    int expected_vertices2[] = {1, 2, 4, 3, 1};
+    EXPECT_DOUBLE_EQ(result.distance, 80.0);
+    for (int i = 0; i < 5; i ++) {
+        EXPECT_EQ(expected_vertices2[i], result.vertices[i]);
+    }
+
+}
+
 int main(int argc, char* argv[]) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

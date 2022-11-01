@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <set>
+#include <algorithm>
 #include "../DataStructures/Queue/Queue.h"
 #include "../DataStructures/Stack/Stack.h"
 #include "../Graph/Graph.h"
@@ -39,7 +40,9 @@ class GraphAlgorithms {
     S21Matrix GetShortestPathsBetweenAllVertices(Graph &graph);
     S21Matrix GetLeastSpanningTree(Graph &graph);
     TsmResult SolveTravelingSalesmanProblem(Graph &graph);
+    TsmResult SolveTSMBruteForceMethod(Graph &graph);
     TsmResult SolveTSMBranchAndBoundMethod(Graph &graph);
+
 
  private:
     AbstractList *list;

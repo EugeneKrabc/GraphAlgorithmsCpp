@@ -52,7 +52,7 @@ void ConsoleEngine::start() {
                 PrintTSM(graph_algorithms_.SolveTravelingSalesmanProblem(graph_));
                 break;
             case DO_RESEARCH_ON_TSM_ALGORITHMS:
-                cout << "Not implemented" << std::endl;
+                ResearchTSMAlgorithmsPerformance(graph_, RequestNmbFromUser("Enter N: "));
                 break;
             case WRITE_GRAPH_TO_FILE:
                 cout << "Not implemented" << std::endl;
@@ -117,6 +117,43 @@ void ConsoleEngine::PrintResultMatrix(s21::S21Matrix result) {
     }
     cout << std::endl;
 }
+
+void ConsoleEngine::ResearchTSMAlgorithmsPerformance(Graph &graph, int count) {
+    if (graph.GetMatrix().get_rows() == 0) {
+        cout << "You should load graph from file first(Menu option 1)" << std::endl;
+        return;
+    }
+
+    if (count <= 0) {
+        cout << "Invalid N" << std::endl;
+        return;
+    }
+
+    if (graph.GetMatrix().get_rows() > 12) {
+        scanf("%*[^\n]");
+        cout << "Graph has more than 12 vertices, it might take a long time(may be forever), are you sure?(y or n) ";
+        char answer;
+        cin >> answer;
+        if (answer == 'n') {
+            return;
+        }
+    }
+
+    cout << "Solving with brute force method started" << std::endl;
+    unsigned start_time = clock();
+    for (int i = 0; i < count; i++) {
+        graph_algorithms_.SolveTSMBruteForceMethod(graph);
+    }
+    unsigned solving_time = (clock() - start_time) / CLOCKS_PER_SEC;
+    printf("BruteForce method solved TSM problem %d times in %d seconds\n", count, solving_time);
+
+    cout << "Solving with branch and bound method started" << std::endl;
+    start_time = clock();
+    for (int i = 0; i < count; i++) {
+        graph_algorithms_.SolveTSMBranchAndBoundMethod(graph);
+    }
+    solving_time = (clock() - start_time) / CLOCKS_PER_SEC;
+    printf("Branch and bound method solved TSM problem %d times in %d seconds\n", count, solving_time);
 
 void ConsoleEngine::PrintResultInt(int result) {
     if (result == Status::WRONG_VERTEX_NUMBER) {
