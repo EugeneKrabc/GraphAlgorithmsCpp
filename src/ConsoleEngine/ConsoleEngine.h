@@ -2,7 +2,7 @@
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_CONSOLEENGINE_H
 
 #include <iostream>
-
+#include <ctime>
 #include "../Graph/Graph.h"
 #include "../GraphAlgorithms/GraphAlgorithms.h"
 
@@ -26,6 +26,8 @@ namespace s21 {
         void PrintResultVector(std::vector<int> result);
         void PrintTSM(TsmResult result);
         void PrintResultMatrix(S21Matrix result);
+
+        void ResearchTSMAlgorithmsPerformance(Graph &graph, int count);
 
         enum MenuOptions {
             EXIT = 0,

@@ -13,7 +13,7 @@ namespace s21 {
 class TSMBranchAndBoundSolver {
  public:
     TSMBranchAndBoundSolver(int nmb_of_graph);
-    void TSP(S21Matrix adj);
+    void TSP(S21Matrix &adj);
     int GetLengthResult();
     std::vector<int> GetFinalPath();
 
@@ -22,10 +22,10 @@ class TSMBranchAndBoundSolver {
     int final_res_;
     std::vector<bool> visited_;
     std::vector<int> final_path_;
-    void CopyToFinal(std::vector<int> curr_path);
-    int FirstMin(S21Matrix adj, int i);
-    int SecondMin(S21Matrix adj, int i);
-    void TSPRec(S21Matrix adj, int curr_bound, int curr_weight, int level, std::vector<int> curr_path);
+    void CopyToFinal(std::vector<int> &curr_path);
+    int FirstMin(S21Matrix &adj, int i);
+    int SecondMin(S21Matrix &adj, int i);
+    void TSPRec(S21Matrix &adj, int curr_bound, int curr_weight, int level, std::vector<int> &curr_path);
 
 };
 

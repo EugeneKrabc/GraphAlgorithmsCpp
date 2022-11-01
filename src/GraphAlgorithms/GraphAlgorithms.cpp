@@ -193,35 +193,33 @@ double GraphAlgorithms::GetEventPossibility(S21Matrix &matrix, int rows, int col
         return ind;
     }
 
-// Might be useful if we're going to do the bonus part
-//
-//#include <algorithm>
-//TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
-//    S21Matrix matrix = graph.GetMatrix();
-//    std::vector<int> vertex, min_path;
-//    for (int i = 1; i < matrix.get_cols(); ++i) {
-//        vertex.push_back(i);
-//    }
-//    int min_weight = std::numeric_limits<int>::max();
-//    while (std::next_permutation(vertex.begin(), vertex.end())) {
-//        int cur_weight = 0;
-//        std::vector<int> cur_path;
-//        int k = 0;
-//        for (size_t i = 0; i < vertex.size(); i++) {
-//            cur_weight += matrix(k, vertex[i]);
-//            cur_path.push_back(k);
-//            k = vertex[i];
-//        }
-//        cur_weight += matrix(k, 0);
-//        cur_path.push_back(k);
-//        if (min_weight > cur_weight) {
-//            min_weight = cur_weight;
-//            min_path = cur_path;
-//        }
-//    }
-//    min_path.push_back(0);
-//    return TsmResult(min_path, min_weight);
-//}
+
+TsmResult GraphAlgorithms::SolveTSMBruteForceMethod(Graph &graph) {
+    S21Matrix matrix = graph.GetMatrix();
+    std::vector<int> vertex, min_path;
+    for (int i = 1; i < matrix.get_cols(); ++i) {
+        vertex.push_back(i);
+    }
+    int min_weight = std::numeric_limits<int>::max();
+    while (std::next_permutation(vertex.begin(), vertex.end())) {
+        int cur_weight = 0;
+        std::vector<int> cur_path;
+        int k = 0;
+        for (size_t i = 0; i < vertex.size(); i++) {
+            cur_weight += matrix(k, vertex[i]);
+            cur_path.push_back(k + 1);
+            k = vertex[i];
+        }
+        cur_weight += matrix(k, 0);
+        cur_path.push_back(k + 1);
+        if (min_weight > cur_weight) {
+            min_weight = cur_weight;
+            min_path = cur_path;
+        }
+    }
+    min_path.push_back(1);
+    return TsmResult(min_path, min_weight);
+}
 
 
 std::vector<int> GraphAlgorithms::DepthFirstSearch(Graph &graph, int start_vertex) {
