@@ -8,12 +8,12 @@ namespace s21 {
         FillEmptyElements();
     }
 
-    TSMAntAlgorithmSolver::pair TSMAntAlgorithmSolver::GetAnswer() {
+    TsmResult TSMAntAlgorithmSolver::GetAnswer() {
         return shortest_path_;
     }
 
     void TSMAntAlgorithmSolver::PerformAntAlgorithm() {
-        shortest_path_ = {{}, -1.0};
+        shortest_path_ = TsmResult({}, -1.0);
         pheromones_ = pheromones_delta_ = event_ = S21Matrix(count_of_nodes_, count_of_nodes_);
         for (int i = 0; i < matrix_.get_rows(); i++) {
             for (int j = 0; j < matrix_.get_cols(); j++) {
@@ -26,13 +26,13 @@ namespace s21 {
             if (iteration > 0) {
                 ApplyDeltaToPheromones();
             }
-            pair cur_path = AntColonyAlgorithm();
-            if (iteration >= 0 && shortest_path_.second == -1.0 || cur_path.second < shortest_path_.second) {
+            TsmResult cur_path = AntColonyAlgorithm();
+            if (iteration >= 0 && shortest_path_.distance == -1.0 || cur_path.distance < shortest_path_.distance) {
                 shortest_path_ = cur_path;
             }
         }
-        for (int i = 0; i < shortest_path_.first.size(); i++) {
-            shortest_path_.first[i]++;
+        for (int i = 0; i < shortest_path_.vertices.size(); i++) {
+            shortest_path_.vertices[i]++;
         }
     }
 
@@ -47,7 +47,7 @@ namespace s21 {
         }
     }
 //#include <iostream>
-    TSMAntAlgorithmSolver::pair TSMAntAlgorithmSolver::AntColonyAlgorithm() {
+    TsmResult TSMAntAlgorithmSolver::AntColonyAlgorithm() {
         const int ants = 200;
         for (int i = 0; i < ants; i++) {
             std::vector<int> ants_path(ants), visited;
@@ -133,7 +133,7 @@ namespace s21 {
         }
     }
 
-    TSMAntAlgorithmSolver::pair TSMAntAlgorithmSolver::GetFullPath() {
+    TsmResult TSMAntAlgorithmSolver::GetFullPath() {
         double cur_path = 0;
 
         std::vector<int> visited = { 0 };
@@ -155,15 +155,15 @@ namespace s21 {
         }
 
         // Reversed path from last visited node to home
-        pair reversed = GetShortestPath(visited.back() + 1, 1);
-        for (int i = reversed.first.size() - 2; i >= 0; i--) {
-            visited.push_back(reversed.first[i]);
+        TsmResult reversed = GetShortestPath(visited.back() + 1, 1);
+        for (int i = reversed.vertices.size() - 2; i >= 0; i--) {
+            visited.push_back(reversed.vertices[i]);
         }
-        cur_path += reversed.second;
-        return std::make_pair(visited, cur_path);
+        cur_path += reversed.distance;
+        return TsmResult(visited, cur_path);
     }
 
-    TSMAntAlgorithmSolver::pair TSMAntAlgorithmSolver::GetShortestPath(int vertex1, int vertex2) {
+    TsmResult TSMAntAlgorithmSolver::GetShortestPath(int vertex1, int vertex2) {
         int size = matrix_.get_rows();
         std::vector<int> pos(size), node(size), parent(size);
         int big_number = std::numeric_limits<int>::max();
@@ -197,6 +197,6 @@ namespace s21 {
         for (int i = vertex2 - 1; i != -1; i = parent[i]) {
             temp.push_back(i);
         }
-        return std::make_pair(temp, pos[vertex2 - 1]);
+        return TsmResult(temp, pos[vertex2 - 1]);
     }
 }

@@ -8,8 +8,7 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
     }
     TSMAntAlgorithmSolver AntAlgorithm(graph.GetMatrix());
     AntAlgorithm.PerformAntAlgorithm();
-    auto result_pair = AntAlgorithm.GetAnswer();
-    return { result_pair.first, result_pair.second };
+    return AntAlgorithm.GetAnswer();
 }
 
 // Might be useful if we're going to do the bonus part

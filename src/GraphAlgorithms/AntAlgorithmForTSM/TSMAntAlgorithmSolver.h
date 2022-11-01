@@ -10,25 +10,24 @@ namespace s21 {
 
     class TSMAntAlgorithmSolver : AbstractTSM {
     public:
-        using pair = std::pair<std::vector<int>, double>;
 
         TSMAntAlgorithmSolver(S21Matrix &matrix);
         void PerformAntAlgorithm();
-        pair GetAnswer();
+        TsmResult GetAnswer();
 
     private:
         S21Matrix pheromones_, pheromones_delta_, event_;
         double count_of_nodes_, max_length_;
-        pair shortest_path_;
+        TsmResult shortest_path_;
 
         void ApplyDeltaToPheromones();
-        pair AntColonyAlgorithm();
+        TsmResult AntColonyAlgorithm();
         double GetEventPossibility(int rows, int cols, std::set<int> &nodes);
         int GetNextNode(int cur_pos, std::set<int> &nodes);
         double LastPositiveEvent(std::vector<double> &event_vec, int j);
         void IncreaseDelta(int path_of_cur, std::vector<int> &visited);
-        pair GetFullPath();
-        pair GetShortestPath(int vertex1, int vertex2);
+        TsmResult GetFullPath();
+        TsmResult GetShortestPath(int vertex1, int vertex2);
     };
 }
 

@@ -7,6 +7,8 @@ namespace s21 {
         std::vector<int> vertices;
         double distance;
 
+        TsmResult() = default;
+
         TsmResult(std::vector<int> path, double distance) {
             this->distance = distance;
             vertices = path;
@@ -15,9 +17,7 @@ namespace s21 {
 
     class AbstractTSM {
     public:
-        AbstractTSM(S21Matrix &matrix) : matrix_(matrix) {
-            FillEmptyElements();
-        }
+        AbstractTSM(S21Matrix &matrix) : matrix_(matrix) {}
         virtual TsmResult GetAnswer() = 0;
         virtual ~AbstractTSM() {}
 
