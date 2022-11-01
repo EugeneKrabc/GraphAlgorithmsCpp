@@ -28,7 +28,7 @@ namespace s21 {
         void PrintResultMatrix(S21Matrix result);
 
 
-        std::string menu_options_ = ("Menu options:\n"
+        std::string menu_options_ = ("\nMenu options:\n"
                                      "\t 1. Load graph from a file.\n"
                                      "\t 2. Perform a depth traversal of the graph.\n"
                                      "\t 3. Perform a breadth traversal of the graph.\n"

@@ -3,30 +3,37 @@
 namespace s21 {
 
 TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
-    S21Matrix matrix = graph.GetMatrix();
-    const int length = matrix.get_cols();
-    TsmResult shortest_path({}, -1);
-    if (length < 2) {
+    if (graph.GetMatrix().get_cols() < 2) {
         return TsmResult({}, Status::OUT_OF_RANGE);
     }
-    pheromones_ = pheromones_delta_ = event_ = S21Matrix(length, length);
-    for (int i = 0; i < matrix.get_rows(); i++) {
-        for (int j = 0; j < matrix.get_cols(); j++) {
-            if (matrix(i, j) != 0.0) {
-                pheromones_(i, j) = 0.2;
-            }
-        }
-    }
-    for (size_t iteration = 0; iteration < 60; iteration++) {
-        if (iteration > 0) {
-            ApplyDeltaToPheromones(matrix);
-        }
-        TsmResult cur_path = AntColonyAlgorithm(matrix, length);
-        if (shortest_path.distance == -1.0 || cur_path.distance < shortest_path.distance) {
-            shortest_path = cur_path;
-        }
-    }
-    return shortest_path;
+    TSMAntAlgorithmSolver AntAlgorithm(graph.GetMatrix());
+    AntAlgorithm.PerformAntAlgorithm();
+    auto result_pair = AntAlgorithm.GetAnswer();
+    return { result_pair.first, result_pair.second };
+//    S21Matrix matrix = graph.GetMatrix();
+//    const int length = matrix.get_cols();
+//    TsmResult shortest_path({}, -1);
+//    pheromones_ = pheromones_delta_ = event_ = S21Matrix(length, length);
+//    for (int i = 0; i < matrix.get_rows(); i++) {
+//        for (int j = 0; j < matrix.get_cols(); j++) {
+//            if (matrix(i, j) != 0.0) {
+//                pheromones_(i, j) = 0.2;
+//            }
+//        }
+//    }
+//    for (size_t iteration = 0; iteration < 60; iteration++) {
+//        if (iteration > 0) {
+//            ApplyDeltaToPheromones(matrix);
+//        }
+//        TsmResult cur_path = AntColonyAlgorithm(matrix, length);
+//        if (iteration > 5 && shortest_path.distance == -1.0 || cur_path.distance < shortest_path.distance) {
+//            shortest_path = cur_path;
+//        }
+//    }
+//    for (int i = 0; i < shortest_path.vertices.size(); i++) {
+//        shortest_path.vertices[i]++;
+//    }
+//    return shortest_path;
 }
 
 TsmResult GraphAlgorithms::AntColonyAlgorithm(S21Matrix &matrix, const int length) {
@@ -38,11 +45,11 @@ TsmResult GraphAlgorithms::AntColonyAlgorithm(S21Matrix &matrix, const int lengt
             available_nodes.insert(i);
         int current_pos = 0;
         while (true) {
-            event_.FillWithDigit(0.0);
             visited.push_back(current_pos);
             available_nodes.erase(current_pos);
             if (available_nodes.size() == 0)
                 break;
+            event_.FillWithDigit(0.0);
             for (int j = 1; j < length && available_nodes.size() > 1; j++) {
                 if (matrix(current_pos, j) != 0.0) {
                     event_(current_pos, j) = GetEventPossibility(matrix, current_pos, j, available_nodes);
@@ -58,7 +65,7 @@ TsmResult GraphAlgorithms::AntColonyAlgorithm(S21Matrix &matrix, const int lengt
     return GetFullPath(matrix);
 }
 
-    std::vector<int> GraphAlgorithms::GetStackWithShortestPathBetweenVertices(S21Matrix &matrix, int vertex1, int vertex2, int *length) {
+    std::vector<int> GraphAlgorithms::GetShortestPathVector(S21Matrix &matrix, int vertex1, int vertex2, int *length) {
         int size = matrix.get_rows();
         std::vector<int> pos(size), node(size), parent(size);
         int big_number = std::numeric_limits<int>::max();
@@ -119,7 +126,7 @@ TsmResult GraphAlgorithms::GetFullPath(S21Matrix &matrix) {
 
     int last_path;
     // Reversed path from last visited node to home
-    auto reversed = GetStackWithShortestPathBetweenVertices(matrix, visited.back() + 1, 1, &last_path);
+    auto reversed = GetShortestPathVector(matrix, visited.back() + 1, 1, &last_path);
     for (int i = reversed.size() - 2; i >= 0; i--) {
         visited.push_back(reversed[i]);
     }
@@ -288,7 +295,7 @@ void GraphAlgorithms::debug_print_stack(Stack stack) {
 
 int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2) {
     int size = graph.GetMatrix().get_rows();
-    if (size < 2 || vertex1 < 1 || vertex1 < 1 || vertex1 > size || vertex2 > size) return 0;
+    if (size < 2 || vertex1 < 1 || vertex2 < 1 || vertex1 > size || vertex2 > size) return 0;
     std::vector<int> pos, node, parent;
     pos.resize(size);
     node.resize(size);

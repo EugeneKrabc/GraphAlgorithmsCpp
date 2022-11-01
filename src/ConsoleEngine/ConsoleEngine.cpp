@@ -65,7 +65,7 @@ void ConsoleEngine::PrintTSM(TsmResult result) {
     if (result.distance == Status::OUT_OF_RANGE) {
         cout << "Count of vertices must be more than 1\n";
     } else {
-        cout << "THe shortest path weights is " << result.distance << std::endl;
+        cout << "The shortest path costs " << result.distance << std::endl;
         cout << "Order of vertices: ";
         for (auto iterator: result.vertices)
             cout << iterator << ' ';

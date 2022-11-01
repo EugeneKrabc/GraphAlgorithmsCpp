@@ -8,6 +8,7 @@
 #include "../Graph/Graph.h"
 #include "../DataStructures/AbstractList.h"
 #include "BranchAndBoundAlgorithmForTSM/TSMBranchAndBoundSolver.h"
+#include "AntAlgorithmForTSM/TSMAntAlgorithmSolver.h"
 
 namespace s21 {
 struct TsmResult {
@@ -58,7 +59,7 @@ class GraphAlgorithms {
     TsmResult AntColonyAlgorithm(S21Matrix &matrix, const int length);
     TsmResult GetFullPath(S21Matrix &matrix);
     int GetNextNode(S21Matrix &matrix, int cur_pos, std::set<int> &visited);
-    std::vector<int> GetStackWithShortestPathBetweenVertices(S21Matrix &matrix, int vertex1, int vertex2, int *length);
+    std::vector<int> GetShortestPathVector(S21Matrix &matrix, int vertex1, int vertex2, int *length);
     double GetEventPossibility(S21Matrix &matrix, int rows, int cols, std::set<int> &nodes);
     void ApplyDeltaToPheromones(S21Matrix &matrix);
     void IncreaseDelta(S21Matrix &matrix, int path_of_cur, std::vector<int> &visited);
