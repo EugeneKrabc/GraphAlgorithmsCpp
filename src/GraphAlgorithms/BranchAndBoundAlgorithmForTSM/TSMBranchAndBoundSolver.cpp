@@ -18,7 +18,7 @@ TSMBranchAndBoundSolver::TSMBranchAndBoundSolver(S21Matrix &matrix) : AbstractTS
 }
 
 void TSMBranchAndBoundSolver::CopyToFinal(std::vector<int> &curr_path) {
-    for (int i = 0; i < curr_path.size(); i++) {
+    for (int i = 0; i < curr_path.size(); ++i) {
         final_path_[i] = curr_path[i] + 1;
     }
     final_path_[nmb_of_graph_] = curr_path[0] + 1;
@@ -26,7 +26,7 @@ void TSMBranchAndBoundSolver::CopyToFinal(std::vector<int> &curr_path) {
 
 int TSMBranchAndBoundSolver::FirstMin(int i) {
     int min = INT32_MAX;
-    for (int j = 0; j < nmb_of_graph_; j++) {
+    for (int j = 0; j < nmb_of_graph_; ++j) {
         if (matrix_(i, j) < min && i != j) {
             min = matrix_(i, j);
         }
@@ -36,7 +36,7 @@ int TSMBranchAndBoundSolver::FirstMin(int i) {
 
 int TSMBranchAndBoundSolver::SecondMin(int i) {
     int first = INT32_MAX, second = INT32_MAX;
-    for (int j = 0; j < nmb_of_graph_; j++) {
+    for (int j = 0; j < nmb_of_graph_; ++j) {
         if (i == j) continue;
 
         if (matrix_(i, j) <= first) {
@@ -62,7 +62,7 @@ void TSMBranchAndBoundSolver::TSPRec(int curr_bound, int curr_weight, int level,
         return;
     }
 
-    for (int i = 0; i < nmb_of_graph_; i++) {
+    for (int i = 0; i < nmb_of_graph_; ++i) {
         if (matrix_(curr_path[level - 1], i) != 0 && !visited_[i]) {
             int temp = curr_bound;
             curr_weight += matrix_(curr_path[level - 1], i);
@@ -86,7 +86,7 @@ void TSMBranchAndBoundSolver::TSPRec(int curr_bound, int curr_weight, int level,
                 *it = false;
             }
 
-            for (int j = 0; j <= level - 1; j++) {
+            for (int j = 0; j <= level - 1; ++j) {
                 visited_[curr_path[j]] = true;
             }
         }
@@ -97,7 +97,7 @@ void TSMBranchAndBoundSolver::TSP() {
     std::vector<int> curr_path = std::vector<int>(nmb_of_graph_, -1);
     int curr_bound = 0;
 
-    for (int i = 0; i < nmb_of_graph_; i++) {
+    for (int i = 0; i < nmb_of_graph_; ++i) {
         curr_bound += (FirstMin(i) + SecondMin(i));
     }
 
