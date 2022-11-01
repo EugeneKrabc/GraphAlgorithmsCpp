@@ -7,26 +7,26 @@
 
 #include <vector>
 #include "../../DataStructures/Matrix/Matrix.h"
-//#include "../AbstractTSM.h"
+#include "../AbstractTSMSolver.h"
 
 namespace s21 {
 
-class TSMBranchAndBoundSolver {
+class TSMBranchAndBoundSolver : public AbstractTSMSolver {
  public:
-    TSMBranchAndBoundSolver(int nmb_of_graph);
-    void TSP(S21Matrix &adj);
-    int GetLengthResult();
-    std::vector<int> GetFinalPath();
+    TSMBranchAndBoundSolver(S21Matrix &matrix);
+    TsmResult GetAnswer();
 
  private:
     int nmb_of_graph_;
-    int final_res_;
+    double final_res_;
     std::vector<bool> visited_;
     std::vector<int> final_path_;
+
+    void TSP();
     void CopyToFinal(std::vector<int> &curr_path);
-    int FirstMin(S21Matrix &adj, int i);
-    int SecondMin(S21Matrix &adj, int i);
-    void TSPRec(S21Matrix &adj, int curr_bound, int curr_weight, int level, std::vector<int> &curr_path);
+    int FirstMin(int i);
+    int SecondMin(int i);
+    void TSPRec(int curr_bound, int curr_weight, int level, std::vector<int> &curr_path);
 
 };
 

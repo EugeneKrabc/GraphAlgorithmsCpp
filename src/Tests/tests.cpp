@@ -97,43 +97,38 @@ TEST(PartThreeTests, GetLeastSpanningTree) {
     EXPECT_TRUE(tmp_matrix == expected_matrix);
 }
 
-TEST(TSMSolverTest, BranchAndBoundMethod) {
-    Graph graph;
-    GraphAlgorithms graph_algorithms;
-    graph.GetMatrixFromFile("DotFiles/TSM6x6.txt");
-    TsmResult result = graph_algorithms.SolveTravelingSalesmanProblem(graph);
-    int expected_vertices[] = {1, 3, 5, 2, 6, 4, 1};
-    EXPECT_DOUBLE_EQ(result.distance, 94.0);
-    for (int i = 0; i < 7; i++) {
-        EXPECT_EQ(expected_vertices[i], result.vertices[i]);
-    }
-
-    graph.GetMatrixFromFile("DotFiles/TSM4x4.txt");
-    result = graph_algorithms.SolveTravelingSalesmanProblem(graph);
-    int expected_vertices2[] = {1, 2, 4, 3, 1};
-    EXPECT_DOUBLE_EQ(result.distance, 80.0);
-    for (int i = 0; i < 5; i++) {
-        EXPECT_EQ(expected_vertices2[i], result.vertices[i]);
-    }
+void SetupSolvers(AbstractTSMSolver *solvers[], S21Matrix &matrix) {
+    solvers[0] = new TSMAntAlgorithmSolver(matrix);
+    solvers[1] = new TSMBranchAndBoundSolver(matrix);
+    solvers[2] = new TSMBruteForce(matrix);
 }
 
-TEST(TSMSolverTest, BruteForce) {
+TEST(TSMTest, AllAlgorithms) {
     Graph graph;
-    GraphAlgorithms graph_algorithms;
+    AbstractTSMSolver *solvers[3];
+
     graph.GetMatrixFromFile("DotFiles/TSM6x6.txt");
-    TsmResult result = graph_algorithms.SolveTSMBruteForceMethod(graph);
+    SetupSolvers(solvers, graph.GetMatrix());
     int expected_vertices[] = {1, 3, 5, 2, 6, 4, 1};
-    EXPECT_DOUBLE_EQ(result.distance, 94.0);
-    for (int i = 0; i < 7; i ++) {
-        EXPECT_EQ(expected_vertices[i], result.vertices[i]);
+    for (int i = 0; i < 3; i++) {
+        TsmResult result = solvers[i]->GetAnswer();
+        EXPECT_DOUBLE_EQ(result.distance, 94.0);
+        for (int i = 0; i < 7; i ++) {
+            EXPECT_EQ(expected_vertices[i], result.vertices[i]);
+        }
+        delete solvers[i];
     }
 
     graph.GetMatrixFromFile("DotFiles/TSM4x4.txt");
-    result = graph_algorithms.SolveTSMBruteForceMethod(graph);
+    SetupSolvers(solvers, graph.GetMatrix());
     int expected_vertices2[] = {1, 2, 4, 3, 1};
-    EXPECT_DOUBLE_EQ(result.distance, 80.0);
-    for (int i = 0; i < 5; i ++) {
-        EXPECT_EQ(expected_vertices2[i], result.vertices[i]);
+    for (int i = 0; i < 3; i++) {
+        TsmResult result = solvers[i]->GetAnswer();
+        EXPECT_DOUBLE_EQ(result.distance, 80.0);
+        for (int i = 0; i < 5; i ++) {
+            EXPECT_EQ(expected_vertices2[i], result.vertices[i]);
+        }
+        delete solvers[i];
     }
 }
 

@@ -21,9 +21,9 @@ void ConsoleEngine::start() {
         switch (answer) {
             int start_vertex, end_vertex;
             case LOAD_GRAPH_FROM_FILE:  // 1
-                cout << "Enter path to file: ";
-                cin >> read_path_;
-                graph_.GetMatrixFromFile(read_path_);
+//                cout << "Enter path to file: ";
+//                cin >> read_path_;
+                graph_.GetMatrixFromFile("DotFiles/example.txt");
                 break;
             case PERFORM_DFS:  // 2
                 if (!graph_.IsEmpty()) start_vertex = RequestNmbFromUser("Enter start vertex: ");
@@ -50,13 +50,15 @@ void ConsoleEngine::start() {
             case SOLVE_TSM_ANT_METHOD:  // 7
                 PrintTSM(graph_algorithms_.SolveTravelingSalesmanProblem(graph_));
                 break;
-            case DO_RESEARCH_ON_TSM_ALGORITHMS:
+            case DO_RESEARCH_ON_TSM_ALGORITHMS:  // 8
                 ResearchTSMAlgorithmsPerformance(graph_, RequestNmbFromUser("Enter N: "));
                 break;
-            case WRITE_GRAPH_TO_FILE:
-                cout << "Not implemented" << std::endl;
+            case WRITE_GRAPH_TO_FILE:  // 9
+                cout << "Enter the file name: ";
+                cin >> read_path_;
+                graph_.WriteMatrixToFile(read_path_);
                 break;
-            case EXIT:
+            case EXIT:  // 0
                 return;
             default:
                 cout << "Invalid menu option" << std::endl;
@@ -138,21 +140,30 @@ void ConsoleEngine::ResearchTSMAlgorithmsPerformance(Graph &graph, int count) {
         }
     }
 
-    cout << "Solving with brute force method started" << std::endl;
-    unsigned start_time = clock();
-    for (int i = 0; i < count; i++) {
-        graph_algorithms_.SolveTSMBruteForceMethod(graph);
-    }
-    unsigned solving_time = (clock() - start_time) / CLOCKS_PER_SEC;
-    printf("BruteForce method solved TSM problem %d times in %d seconds\n", count, solving_time);
+    AbstractTSMSolver *solver[3];
+    solver[0] = new TSMAntAlgorithmSolver(graph.GetMatrix());
+    solver[1] = new TSMBranchAndBoundSolver(graph.GetMatrix());
+    solver[2] = new TSMBruteForce(graph.GetMatrix());
 
-    cout << "Solving with branch and bound method started" << std::endl;
-    start_time = clock();
-    for (int i = 0; i < count; i++) {
-        graph_algorithms_.SolveTSMBranchAndBoundMethod(graph);
+    char MethodsName[3][50] = { "Ant colony\0",
+                              "Branch and bound\0",
+                              "Brute force\0"};
+
+    cout << "Research has been started\n\n";
+    for (int i = 0; i < 3; i++) {
+        unsigned start_time = clock();
+        for (int j = 0; j < count; j++) {
+            solver[i]->GetAnswer();
+        }
+        unsigned solving_time = (clock() - start_time) / CLOCKS_PER_SEC;
+        printf("%s method solved TSM problem %d times in %d seconds\n", MethodsName[i], count, solving_time);
     }
-    solving_time = (clock() - start_time) / CLOCKS_PER_SEC;
-    printf("Branch and bound method solved TSM problem %d times in %d seconds\n", count, solving_time);
+
+    cout << "\nResearch has been ended\n";
+
+    for (int i = 0; i < 3; i++) {
+        delete solver[i];
+    }
 }
 
 void ConsoleEngine::PrintResultInt(int result) {

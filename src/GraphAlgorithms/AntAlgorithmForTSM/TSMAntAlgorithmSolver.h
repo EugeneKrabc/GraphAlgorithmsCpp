@@ -4,15 +4,14 @@
 #include <vector>
 #include <set>
 #include "../../DataStructures/Matrix/Matrix.h"
-#include "../AbstractTSM.h"
+#include "../AbstractTSMSolver.h"
 
 namespace s21 {
 
-    class TSMAntAlgorithmSolver : AbstractTSM {
+    class TSMAntAlgorithmSolver : public AbstractTSMSolver {
     public:
 
         TSMAntAlgorithmSolver(S21Matrix &matrix);
-        void MainIteration();
         TsmResult GetAnswer();
 
     private:
@@ -20,6 +19,7 @@ namespace s21 {
         double count_of_nodes_, max_length_;
         TsmResult shortest_path_;
 
+        void MainIteration();
         void ApplyDeltaToPheromones();
         TsmResult AntColonyAlgorithm();
         double GetEventPossibility(int rows, int cols, std::set<int> &nodes);

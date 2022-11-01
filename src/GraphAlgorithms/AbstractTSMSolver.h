@@ -15,14 +15,14 @@ namespace s21 {
         }
     };
 
-    class AbstractTSM {
+    class AbstractTSMSolver {
     public:
-        AbstractTSM(S21Matrix &matrix) : matrix_(matrix) {}
+        AbstractTSMSolver(S21Matrix &matrix) : matrix_(matrix) { FillEmptyElements(); }
         virtual TsmResult GetAnswer() = 0;
-        virtual ~AbstractTSM() {}
+        virtual ~AbstractTSMSolver() {}
 
     protected:
-        S21Matrix matrix_;
+        S21Matrix &matrix_;
 
         void FillEmptyElements() {
             double max = matrix_(0, 0);
