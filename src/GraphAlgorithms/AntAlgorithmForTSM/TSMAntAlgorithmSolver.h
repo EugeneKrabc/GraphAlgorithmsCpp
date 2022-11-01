@@ -4,10 +4,11 @@
 #include <vector>
 #include <set>
 #include "../../DataStructures/Matrix/Matrix.h"
+#include "../AbstractTSM.h"
 
 namespace s21 {
 
-    class TSMAntAlgorithmSolver {
+    class TSMAntAlgorithmSolver : AbstractTSM {
     public:
         using pair = std::pair<std::vector<int>, double>;
 
@@ -16,7 +17,7 @@ namespace s21 {
         pair GetAnswer();
 
     private:
-        S21Matrix matrix_, pheromones_, pheromones_delta_, event_;
+        S21Matrix pheromones_, pheromones_delta_, event_;
         double count_of_nodes_, max_length_;
         pair shortest_path_;
 

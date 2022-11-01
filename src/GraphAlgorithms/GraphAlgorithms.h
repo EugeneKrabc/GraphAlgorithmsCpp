@@ -11,15 +11,15 @@
 #include "AntAlgorithmForTSM/TSMAntAlgorithmSolver.h"
 
 namespace s21 {
-struct TsmResult {
-    std::vector<int> vertices;
-    double distance;
-
-    TsmResult(std::vector<int> path, double distance) {
-        this->distance = distance;
-        vertices = path;
-    }
-};
+//struct TsmResult {
+//    std::vector<int> vertices;
+//    double distance;
+//
+//    TsmResult(std::vector<int> path, double distance) {
+//        this->distance = distance;
+//        vertices = path;
+//    }
+//};
 
 enum Status {
     WRONG_VERTEX_NUMBER = -1,
@@ -50,22 +50,6 @@ class GraphAlgorithms {
     int big_number_ = 1000000;
 
     TSMBranchAndBoundSolver *branch_and_bound_solver;
-    
-    ////////////////////////////////////////////////////////////////
-    // TSM-AntAlgorithm stuff
-    S21Matrix pheromones_, pheromones_delta_, event_;
-    double max_length_;
-
-    TsmResult AntColonyAlgorithm(S21Matrix &matrix, const int length);
-    TsmResult GetFullPath(S21Matrix &matrix);
-    int GetNextNode(S21Matrix &matrix, int cur_pos, std::set<int> &visited);
-    std::vector<int> GetShortestPathVector(S21Matrix &matrix, int vertex1, int vertex2, int *length);
-    double GetEventPossibility(S21Matrix &matrix, int rows, int cols, std::set<int> &nodes);
-    void ApplyDeltaToPheromones(S21Matrix &matrix);
-    void IncreaseDelta(S21Matrix &matrix, int path_of_cur, std::vector<int> &visited);
-    double LastPositiveEvent(std::vector<double> &event_vec, int j);
-    ////////////////////////////////////////////////////////////////
-
 };
 
 }  // namespace s21
