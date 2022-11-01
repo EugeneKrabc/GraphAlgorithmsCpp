@@ -15,8 +15,8 @@ TsmResult TSMAntAlgorithmSolver::GetAnswer() {
 void TSMAntAlgorithmSolver::MainIteration() {
     shortest_path_ = TsmResult({}, -1.0);
     pheromones_ = pheromones_delta_ = event_ = S21Matrix(count_of_nodes_, count_of_nodes_);
-    for (int i = 0; i < matrix_.get_rows(); i++) {
-        for (int j = 0; j < matrix_.get_cols(); j++) {
+    for (int i = 0; i < matrix_.get_rows(); ++i) {
+        for (int j = 0; j < matrix_.get_cols(); ++j) {
             if (matrix_(i, j) != 0.0) {
                 pheromones_(i, j) = 0.2;
             }
@@ -31,15 +31,15 @@ void TSMAntAlgorithmSolver::MainIteration() {
             shortest_path_ = cur_path;
         }
     }
-    for (int i = 0; i < shortest_path_.vertices.size(); i++) {
+    for (int i = 0; i < shortest_path_.vertices.size(); ++i) {
         shortest_path_.vertices[i]++;
     }
 }
 
 void TSMAntAlgorithmSolver::ApplyDeltaToPheromones() {
     const double vape = 0.5;
-    for (int i = 0; i < matrix_.get_rows(); i++) {
-        for (int j = 0; j < matrix_.get_cols(); j++) {
+    for (int i = 0; i < matrix_.get_rows(); ++i) {
+        for (int j = 0; j < matrix_.get_cols(); ++j) {
             if (matrix_(i, j) != 0.0) {
                 pheromones_(i, j) = vape * pheromones_(i, j) + pheromones_delta_(i, j);
             }
@@ -53,14 +53,14 @@ TsmResult TSMAntAlgorithmSolver::AntColonyAlgorithm() {
     for (int ant = 0; ant < ants; ant++) {
         std::vector<int> ants_path(ants), visited;
         std::set<int> available_nodes;
-        for (int i = 0; i < count_of_nodes_; i++) available_nodes.insert(i);
+        for (int i = 0; i < count_of_nodes_; ++i) available_nodes.insert(i);
         int current_pos = 0;
         while (true) {
             visited.push_back(current_pos);
             available_nodes.erase(current_pos);
             if (available_nodes.size() == 0) break;
             event_.FillWithDigit(0.0);
-            for (int j = 1; j < count_of_nodes_ && available_nodes.size() > 1; j++) {
+            for (int j = 1; j < count_of_nodes_ && available_nodes.size() > 1; ++j) {
                 if (matrix_(current_pos, j) != 0.0) {
                     event_(current_pos, j) = GetEventPossibility(current_pos, j, available_nodes);
                 }
@@ -95,7 +95,7 @@ int TSMAntAlgorithmSolver::GetNextNode(int cur_pos, std::set<int> &nodes) {
     }
     std::vector<double> event_vec;
     double sum = 0.0;
-    for (int j = 0; j < matrix_.get_rows(); j++) {
+    for (int j = 0; j < matrix_.get_rows(); ++j) {
         if (matrix_(cur_pos, j) != 0.0 && nodes.find(j) != nodes.end()) {
             sum += event_(cur_pos, j);
             event_vec.push_back(sum);
@@ -105,7 +105,7 @@ int TSMAntAlgorithmSolver::GetNextNode(int cur_pos, std::set<int> &nodes) {
     }
     int ind = -1;
     double random_value = (double)rand() / (RAND_MAX);
-    for (int j = 0; j < event_vec.size(); j++) {
+    for (int j = 0; j < event_vec.size(); ++j) {
         if (event_vec[j] != 0.0 &&
             (event_vec[j] > random_value && (ind == -1 || random_value > LastPositiveEvent(event_vec, j)))) {
             ind = j;
@@ -115,9 +115,9 @@ int TSMAntAlgorithmSolver::GetNextNode(int cur_pos, std::set<int> &nodes) {
 }
 
 double TSMAntAlgorithmSolver::LastPositiveEvent(std::vector<double> &event_vec, int j) {
-    j--;
+    --j;
     while (j >= 0 && event_vec[j] == 0.0) {
-        j--;
+        --j;
     }
     return event_vec[j];
 }
@@ -125,7 +125,7 @@ double TSMAntAlgorithmSolver::LastPositiveEvent(std::vector<double> &event_vec, 
 void TSMAntAlgorithmSolver::IncreaseDelta(int path_of_cur, std::vector<int> &visited) {
     int last_ind = visited[0];
     const double Q = 10.0;
-    for (int i = 1; i < visited.size(); i++) {
+    for (int i = 1; i < visited.size(); ++i) {
         pheromones_delta_(last_ind, visited[i]) += Q / path_of_cur;
         last_ind = visited[i];
     }
@@ -136,13 +136,13 @@ TsmResult TSMAntAlgorithmSolver::GetFullPath(std::vector<int> &visited) {
 
     S21Matrix available(pheromones_);
     int cur_pos = 0;
-    for (int i = 1; i < visited.size(); i++) {
+    for (int i = 1; i < visited.size(); ++i) {
         cur_path += matrix_(cur_pos, visited[i]);
         cur_pos = visited[i];
     }
     // Reversed path from last visited node to home
     TsmResult reversed = GetShortestPath(visited.back() + 1, 1);
-    for (int i = reversed.vertices.size() - 2; i >= 0; i--) {
+    for (int i = reversed.vertices.size() - 2; i >= 0; --i) {
         visited.push_back(reversed.vertices[i]);
     }
     cur_path += reversed.distance;
