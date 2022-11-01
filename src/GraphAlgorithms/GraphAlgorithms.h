@@ -64,7 +64,6 @@ class GraphAlgorithms {
     void IncreaseDelta(S21Matrix &matrix, int path_of_cur, std::vector<int> &visited);
     double LastPositiveEvent(std::vector<double> &event_vec, int j);
     ////////////////////////////////////////////////////////////////
-
 };
 
 }  // namespace s21

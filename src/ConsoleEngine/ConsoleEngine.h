@@ -26,6 +26,7 @@ namespace s21 {
         void PrintResultVector(std::vector<int> result);
         void PrintTSM(TsmResult result);
         void PrintResultMatrix(S21Matrix result);
+        void PrintResultInt(int result);
 
         enum MenuOptions {
             EXIT = 0,
