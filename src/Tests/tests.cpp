@@ -101,7 +101,7 @@ TEST(TSMSolverTest, BranchAndBoundMethod) {
     Graph graph;
     GraphAlgorithms graph_algorithms;
     graph.GetMatrixFromFile("DotFiles/TSM6x6.txt");
-    TsmResult result = graph_algorithms.SolveTSMBranchAndBoundMethod(graph);
+    TsmResult result = graph_algorithms.SolveTravelingSalesmanProblem(graph);
     int expected_vertices[] = {1, 3, 5, 2, 6, 4, 1};
     EXPECT_DOUBLE_EQ(result.distance, 94.0);
     for (int i = 0; i < 7; i++) {
@@ -109,7 +109,7 @@ TEST(TSMSolverTest, BranchAndBoundMethod) {
     }
 
     graph.GetMatrixFromFile("DotFiles/TSM4x4.txt");
-    result = graph_algorithms.SolveTSMBranchAndBoundMethod(graph);
+    result = graph_algorithms.SolveTravelingSalesmanProblem(graph);
     int expected_vertices2[] = {1, 2, 4, 3, 1};
     EXPECT_DOUBLE_EQ(result.distance, 80.0);
     for (int i = 0; i < 5; i++) {
@@ -135,7 +135,6 @@ TEST(TSMSolverTest, BruteForce) {
     for (int i = 0; i < 5; i ++) {
         EXPECT_EQ(expected_vertices2[i], result.vertices[i]);
     }
-
 }
 
 int main(int argc, char* argv[]) {

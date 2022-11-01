@@ -54,8 +54,7 @@ class ConsoleEngine {
                                  "\t 8. Do research of TSM algorithms performance.\n"
                                  "\t 9. Write graph to the file\n"
                                  "\t 0. Close the application.\n");
-
-
+    };
 };
 
 }  // namespace s21

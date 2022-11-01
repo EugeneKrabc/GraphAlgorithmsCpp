@@ -18,7 +18,6 @@ void ConsoleEngine::start() {
         if (input.size() == 1 && input.at(0) >= '0' && input.at(0) <= '9') {
             answer = stoi(input);
         }
-
         switch (answer) {
             int start_vertex, end_vertex;
             case LOAD_GRAPH_FROM_FILE:  // 1
@@ -82,7 +81,7 @@ void ConsoleEngine::PrintTSM(TsmResult result) {
     if (result.distance == Status::EMPTY_GRAPH_ERROR) {
         cout << "You should load graph from file first (Menu option 1)";
     } else {
-        cout << "The shortest path weights is " << result.distance << std::endl;
+        cout << "The shortest path costs " << result.distance << std::endl;
         cout << "Order of vertices: ";
         for (auto iterator : result.vertices) cout << iterator << ' ';
     }
