@@ -7,7 +7,7 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
     const int length = matrix.get_cols();
     TsmResult shortest_path({}, -1);
     if (length < 2) {
-        return TsmResult({}, Status::OUT_OF_RANGE);
+        return TsmResult({}, Status::EMPTY_GRAPH_ERROR);
     }
     pheromones_ = pheromones_delta_ = event_ = S21Matrix(length, length);
     for (int i = 0; i < matrix.get_rows(); i++) {
@@ -34,15 +34,13 @@ TsmResult GraphAlgorithms::AntColonyAlgorithm(S21Matrix &matrix, const int lengt
     for (int i = 0; i < ants; i++) {
         std::vector<int> ants_path(ants), visited;
         std::set<int> available_nodes;
-        for (int i = 0; i < length; i++)
-            available_nodes.insert(i);
+        for (int i = 0; i < length; i++) available_nodes.insert(i);
         int current_pos = 0;
         while (true) {
             event_.FillWithDigit(0.0);
             visited.push_back(current_pos);
             available_nodes.erase(current_pos);
-            if (available_nodes.size() == 0)
-                break;
+            if (available_nodes.size() == 0) break;
             for (int j = 1; j < length && available_nodes.size() > 1; j++) {
                 if (matrix(current_pos, j) != 0.0) {
                     event_(current_pos, j) = GetEventPossibility(matrix, current_pos, j, available_nodes);
@@ -58,48 +56,49 @@ TsmResult GraphAlgorithms::AntColonyAlgorithm(S21Matrix &matrix, const int lengt
     return GetFullPath(matrix);
 }
 
-    std::vector<int> GraphAlgorithms::GetStackWithShortestPathBetweenVertices(S21Matrix &matrix, int vertex1, int vertex2, int *length) {
-        int size = matrix.get_rows();
-        std::vector<int> pos(size), node(size), parent(size);
-        int big_number = std::numeric_limits<int>::max();
-        for (int i = 0; i < size; ++i) {
-            pos[i] = big_number;
-            node[i] = 0;
-            parent[i] = -1;
-        }
-
-        int min = 0, index_min = 0;
-        pos[vertex1 - 1] = 0;
-        for (int i = 0; i < size; ++i) {
-            min = big_number;
-            for (int j = 0; j < size; ++j) {
-                if (!node[j] && pos[j] < min) {
-                    min = pos[j];
-                    index_min = j;
-                }
-            }
-            node[index_min] = 1;
-            for (int j = 0; j < size; ++j) {
-                if (!node[j] && matrix(index_min, j) && pos[index_min] != big_number &&
-                    pos[index_min] + matrix(index_min, j) < pos[j]) {
-                    pos[j] = pos[index_min] + matrix(index_min, j);
-                    parent[j] = index_min;
-                }
-            }
-        }
-
-        std::vector<int> temp;
-        for (int i = vertex2 - 1; i != -1; i = parent[i]) {
-            temp.push_back(i);
-        }
-        *length = pos[vertex2 - 1];
-        return temp;
+std::vector<int> GraphAlgorithms::GetStackWithShortestPathBetweenVertices(S21Matrix &matrix, int vertex1,
+                                                                          int vertex2, int *length) {
+    int size = matrix.get_rows();
+    std::vector<int> pos(size), node(size), parent(size);
+    int big_number = std::numeric_limits<int>::max();
+    for (int i = 0; i < size; ++i) {
+        pos[i] = big_number;
+        node[i] = 0;
+        parent[i] = -1;
     }
+
+    int min = 0, index_min = 0;
+    pos[vertex1 - 1] = 0;
+    for (int i = 0; i < size; ++i) {
+        min = big_number;
+        for (int j = 0; j < size; ++j) {
+            if (!node[j] && pos[j] < min) {
+                min = pos[j];
+                index_min = j;
+            }
+        }
+        node[index_min] = 1;
+        for (int j = 0; j < size; ++j) {
+            if (!node[j] && matrix(index_min, j) && pos[index_min] != big_number &&
+                pos[index_min] + matrix(index_min, j) < pos[j]) {
+                pos[j] = pos[index_min] + matrix(index_min, j);
+                parent[j] = index_min;
+            }
+        }
+    }
+
+    std::vector<int> temp;
+    for (int i = vertex2 - 1; i != -1; i = parent[i]) {
+        temp.push_back(i);
+    }
+    *length = pos[vertex2 - 1];
+    return temp;
+}
 
 TsmResult GraphAlgorithms::GetFullPath(S21Matrix &matrix) {
     double cur_path = 0;
 
-    std::vector<int> visited = { 0 };
+    std::vector<int> visited = {0};
     S21Matrix available(pheromones_);
     int cur_pos = 0;
     while (visited.size() < matrix.get_cols()) {
@@ -107,7 +106,7 @@ TsmResult GraphAlgorithms::GetFullPath(S21Matrix &matrix) {
         for (int i = 0; i < matrix.get_cols(); i++) {
             if (available(cur_pos, i) > 0.0 &&
                 (max == -1 || available(cur_pos, i) > available(cur_pos, max) ||
-                    available(i, cur_pos) > available(cur_pos, max))) {
+                 available(i, cur_pos) > available(cur_pos, max))) {
                 max = i;
             }
         }
@@ -160,39 +159,38 @@ double GraphAlgorithms::GetEventPossibility(S21Matrix &matrix, int rows, int col
     return (nominator / denominator);
 }
 
-    double GraphAlgorithms::LastPositiveEvent(std::vector<double> &event_vec, int j) {
+double GraphAlgorithms::LastPositiveEvent(std::vector<double> &event_vec, int j) {
+    j--;
+    while (j >= 0 && event_vec[j] == 0.0) {
         j--;
-        while (j >= 0 && event_vec[j] == 0.0) {
-            j--;
-        }
-        return event_vec[j];
     }
+    return event_vec[j];
+}
 
-    int GraphAlgorithms::GetNextNode(S21Matrix &matrix, int cur_pos, std::set<int> &nodes) {
-        if (nodes.size() == 1) {
-            return *(nodes.begin());
-        }
-        std::vector<double> event_vec;
-        double sum = 0.0;
-        for (int j = 0; j < matrix.get_rows(); j++) {
-            if (matrix(cur_pos, j) != 0.0 && nodes.find(j) != nodes.end()) {
-                sum += event_(cur_pos, j);
-                event_vec.push_back(sum);
-            } else {
-                event_vec.push_back(0.0);
-            }
-        }
-        int ind = -1;
-        double random_value = (double)rand() / (RAND_MAX);
-        for (int j = 0; j < event_vec.size(); j++) {
-            if (event_vec[j] != 0.0 && (event_vec[j] > random_value &&
-                (ind == -1 || random_value > LastPositiveEvent(event_vec, j)))) {
-                ind = j;
-            }
-        }
-        return ind;
+int GraphAlgorithms::GetNextNode(S21Matrix &matrix, int cur_pos, std::set<int> &nodes) {
+    if (nodes.size() == 1) {
+        return *(nodes.begin());
     }
-
+    std::vector<double> event_vec;
+    double sum = 0.0;
+    for (int j = 0; j < matrix.get_rows(); j++) {
+        if (matrix(cur_pos, j) != 0.0 && nodes.find(j) != nodes.end()) {
+            sum += event_(cur_pos, j);
+            event_vec.push_back(sum);
+        } else {
+            event_vec.push_back(0.0);
+        }
+    }
+    int ind = -1;
+    double random_value = (double)rand() / (RAND_MAX);
+    for (int j = 0; j < event_vec.size(); j++) {
+        if (event_vec[j] != 0.0 &&
+            (event_vec[j] > random_value && (ind == -1 || random_value > LastPositiveEvent(event_vec, j)))) {
+            ind = j;
+        }
+    }
+    return ind;
+}
 
 TsmResult GraphAlgorithms::SolveTSMBruteForceMethod(Graph &graph) {
     S21Matrix matrix = graph.GetMatrix();
@@ -221,7 +219,6 @@ TsmResult GraphAlgorithms::SolveTSMBruteForceMethod(Graph &graph) {
     return TsmResult(min_path, min_weight);
 }
 
-
 std::vector<int> GraphAlgorithms::DepthFirstSearch(Graph &graph, int start_vertex) {
     return SearchAlgo(graph, start_vertex, SearchType::DepthFirstSearch);
 }
@@ -230,8 +227,7 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(Graph &graph, int start_ver
     return SearchAlgo(graph, start_vertex, SearchType::BreadthFirstSearch);
 }
 
-std::vector<int> GraphAlgorithms::SearchAlgo(Graph &graph, int start_vertex,
-                                             SearchType search_type) {
+std::vector<int> GraphAlgorithms::SearchAlgo(Graph &graph, int start_vertex, SearchType search_type) {
     std::vector<int> result = std::vector<int>();
     if (graph.GetMatrix().get_cols() == 0) {
         result.push_back(Status::EMPTY_GRAPH_ERROR);
@@ -286,7 +282,10 @@ void GraphAlgorithms::debug_print_stack(Stack stack) {
 
 int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2) {
     int size = graph.GetMatrix().get_rows();
-    if (size < 2 || vertex1 < 1 || vertex1 < 1 || vertex1 > size || vertex2 > size) return 0;
+    if (size < 2)
+        return Status::EMPTY_GRAPH_ERROR;
+    else if (vertex1 < 1 || vertex1 < 1 || vertex1 > size || vertex2 > size)
+        return Status::WRONG_VERTEX_NUMBER;
     std::vector<int> pos, node, parent;
     pos.resize(size);
     node.resize(size);
@@ -346,6 +345,7 @@ S21Matrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(Graph &graph) {
 
 S21Matrix GraphAlgorithms::GetLeastSpanningTree(Graph &graph) {
     int size = graph.GetMatrix().get_rows();
+    if (size < 2) return S21Matrix();
     S21Matrix return_matrix(size, size), tmp_matrix(graph.GetMatrix());
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
@@ -383,12 +383,9 @@ S21Matrix GraphAlgorithms::GetLeastSpanningTree(Graph &graph) {
 TsmResult GraphAlgorithms::SolveTSMBranchAndBoundMethod(Graph &graph) {
     branch_and_bound_solver = new TSMBranchAndBoundSolver(graph.GetMatrix().get_cols());
     branch_and_bound_solver->TSP(graph.GetMatrix());
-    TsmResult result(branch_and_bound_solver->GetFinalPath(),
-                     branch_and_bound_solver->GetLengthResult());
+    TsmResult result(branch_and_bound_solver->GetFinalPath(), branch_and_bound_solver->GetLengthResult());
     delete branch_and_bound_solver;
     return result;
 }
-
-
 
 }  // namespace s21

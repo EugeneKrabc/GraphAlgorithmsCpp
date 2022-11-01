@@ -1,19 +1,21 @@
 #ifndef A2_SIMPLENAVIGATOR_V1_0_0_MASTER_DOTFORMATHANDLER_H
 #define A2_SIMPLENAVIGATOR_V1_0_0_MASTER_DOTFORMATHANDLER_H
 
-#include "../DataStructures/Matrix/Matrix.h"
-#include <string>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <string>
+
+#include "../DataStructures/Matrix/Matrix.h"
 
 namespace s21 {
 
 class Graph {
- public:
+public:
     Graph();
     void WriteMatrixToFile(std::string filename);
     void GetMatrixFromFile(std::string filename);
     void ExportGraphToDot(std::string filename);
+    bool IsEmpty();
 
     S21Matrix& GetMatrix();
 
@@ -23,5 +25,4 @@ private:
 
 }  // namespace s21
 
-
-#endif //A2_SIMPLENAVIGATOR_V1_0_0_MASTER_DOTFORMATHANDLER_H
+#endif  // A2_SIMPLENAVIGATOR_V1_0_0_MASTER_DOTFORMATHANDLER_H
