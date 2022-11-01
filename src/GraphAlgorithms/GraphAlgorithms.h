@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <set>
+#include <algorithm>
 #include "../DataStructures/Queue/Queue.h"
 #include "../DataStructures/Stack/Stack.h"
 #include "../Graph/Graph.h"
@@ -11,15 +12,6 @@
 #include "AntAlgorithmForTSM/TSMAntAlgorithmSolver.h"
 
 namespace s21 {
-//struct TsmResult {
-//    std::vector<int> vertices;
-//    double distance;
-//
-//    TsmResult(std::vector<int> path, double distance) {
-//        this->distance = distance;
-//        vertices = path;
-//    }
-//};
 
 enum Status {
     WRONG_VERTEX_NUMBER = -1,
@@ -40,7 +32,9 @@ class GraphAlgorithms {
     S21Matrix GetShortestPathsBetweenAllVertices(Graph &graph);
     S21Matrix GetLeastSpanningTree(Graph &graph);
     TsmResult SolveTravelingSalesmanProblem(Graph &graph);
+    TsmResult SolveTSMBruteForceMethod(Graph &graph);
     TsmResult SolveTSMBranchAndBoundMethod(Graph &graph);
+
 
  private:
     AbstractList *list;

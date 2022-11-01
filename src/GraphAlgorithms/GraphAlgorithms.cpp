@@ -11,36 +11,32 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
     return AntAlgorithm.GetAnswer();
 }
 
-// Might be useful if we're going to do the bonus part
-//
-//#include <algorithm>
-//TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
-//    S21Matrix matrix = graph.GetMatrix();
-//    std::vector<int> vertex, min_path;
-//    for (int i = 1; i < matrix.get_cols(); ++i) {
-//        vertex.push_back(i);
-//    }
-//    int min_weight = std::numeric_limits<int>::max();
-//    while (std::next_permutation(vertex.begin(), vertex.end())) {
-//        int cur_weight = 0;
-//        std::vector<int> cur_path;
-//        int k = 0;
-//        for (size_t i = 0; i < vertex.size(); i++) {
-//            cur_weight += matrix(k, vertex[i]);
-//            cur_path.push_back(k);
-//            k = vertex[i];
-//        }
-//        cur_weight += matrix(k, 0);
-//        cur_path.push_back(k);
-//        if (min_weight > cur_weight) {
-//            min_weight = cur_weight;
-//            min_path = cur_path;
-//        }
-//    }
-//    min_path.push_back(0);
-//    return TsmResult(min_path, min_weight);
-//}
-
+TsmResult GraphAlgorithms::SolveTSMBruteForceMethod(Graph &graph) {
+    S21Matrix matrix = graph.GetMatrix();
+    std::vector<int> vertex, min_path;
+    for (int i = 1; i < matrix.get_cols(); ++i) {
+        vertex.push_back(i);
+    }
+    int min_weight = std::numeric_limits<int>::max();
+    while (std::next_permutation(vertex.begin(), vertex.end())) {
+        int cur_weight = 0;
+        std::vector<int> cur_path;
+        int k = 0;
+        for (size_t i = 0; i < vertex.size(); i++) {
+            cur_weight += matrix(k, vertex[i]);
+            cur_path.push_back(k + 1);
+            k = vertex[i];
+        }
+        cur_weight += matrix(k, 0);
+        cur_path.push_back(k + 1);
+        if (min_weight > cur_weight) {
+            min_weight = cur_weight;
+            min_path = cur_path;
+        }
+    }
+    min_path.push_back(1);
+    return TsmResult(min_path, min_weight);
+}
 
 std::vector<int> GraphAlgorithms::DepthFirstSearch(Graph &graph, int start_vertex) {
     return SearchAlgo(graph, start_vertex, SearchType::DepthFirstSearch);
@@ -50,8 +46,7 @@ std::vector<int> GraphAlgorithms::BreadthFirstSearch(Graph &graph, int start_ver
     return SearchAlgo(graph, start_vertex, SearchType::BreadthFirstSearch);
 }
 
-std::vector<int> GraphAlgorithms::SearchAlgo(Graph &graph, int start_vertex,
-                                             SearchType search_type) {
+std::vector<int> GraphAlgorithms::SearchAlgo(Graph &graph, int start_vertex, SearchType search_type) {
     std::vector<int> result = std::vector<int>();
     if (graph.GetMatrix().get_cols() == 0) {
         result.push_back(Status::EMPTY_GRAPH_ERROR);
@@ -106,7 +101,10 @@ void GraphAlgorithms::debug_print_stack(Stack stack) {
 
 int GraphAlgorithms::GetShortestPathBetweenVertices(Graph &graph, int vertex1, int vertex2) {
     int size = graph.GetMatrix().get_rows();
-    if (size < 2 || vertex1 < 1 || vertex2 < 1 || vertex1 > size || vertex2 > size) return 0;
+    if (size < 2)
+        return Status::EMPTY_GRAPH_ERROR;
+    else if (vertex1 < 1 || vertex1 < 1 || vertex1 > size || vertex2 > size)
+        return Status::WRONG_VERTEX_NUMBER;
     std::vector<int> pos, node, parent;
     pos.resize(size);
     node.resize(size);
@@ -166,6 +164,7 @@ S21Matrix GraphAlgorithms::GetShortestPathsBetweenAllVertices(Graph &graph) {
 
 S21Matrix GraphAlgorithms::GetLeastSpanningTree(Graph &graph) {
     int size = graph.GetMatrix().get_rows();
+    if (size < 2) return S21Matrix();
     S21Matrix return_matrix(size, size), tmp_matrix(graph.GetMatrix());
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
@@ -203,12 +202,9 @@ S21Matrix GraphAlgorithms::GetLeastSpanningTree(Graph &graph) {
 TsmResult GraphAlgorithms::SolveTSMBranchAndBoundMethod(Graph &graph) {
     branch_and_bound_solver = new TSMBranchAndBoundSolver(graph.GetMatrix().get_cols());
     branch_and_bound_solver->TSP(graph.GetMatrix());
-    TsmResult result(branch_and_bound_solver->GetFinalPath(),
-                     branch_and_bound_solver->GetLengthResult());
+    TsmResult result(branch_and_bound_solver->GetFinalPath(), branch_and_bound_solver->GetLengthResult());
     delete branch_and_bound_solver;
     return result;
 }
-
-
 
 }  // namespace s21

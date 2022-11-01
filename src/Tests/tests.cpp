@@ -45,7 +45,7 @@ TEST(PartOneTests, BFS) {
     GraphAlgorithms graph_algorithms;
     graph.GetMatrixFromFile("DotFiles/TreeGraph.dot");
     std::vector<int> result = graph_algorithms.BreadthFirstSearch(graph, 1);
-    int expected_values3[] = {1,4, 3, 2, 8,7, 6, 5, 12, 11, 10, 9};
+    int expected_values3[] = {1, 4, 3, 2, 8, 7, 6, 5, 12, 11, 10, 9};
     EXPECT_EQ(result.size(), 12);
     for (int i = 0; i < 12; i++) {
         EXPECT_EQ(result[i], expected_values3[i]);
@@ -73,7 +73,7 @@ TEST(PartTwoTests, GetShortestPathBetweenVertices) {
     EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 3, 8), 9);
     EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 11, 2), 12);
     EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 4, 10), 13);
-    EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 13, 14), 0);
+    EXPECT_EQ(graph_algorithms.GetShortestPathBetweenVertices(graph, 13, 14), -1);
 }
 
 TEST(PartTwoTests, GetShortestPathsBetweenAllVertices) {
@@ -104,12 +104,32 @@ TEST(TSMSolverTest, BranchAndBoundMethod) {
     TsmResult result = graph_algorithms.SolveTravelingSalesmanProblem(graph);
     int expected_vertices[] = {1, 3, 5, 2, 6, 4, 1};
     EXPECT_DOUBLE_EQ(result.distance, 94.0);
-    for (int i = 0; i < 7; i ++) {
+    for (int i = 0; i < 7; i++) {
         EXPECT_EQ(expected_vertices[i], result.vertices[i]);
     }
 
     graph.GetMatrixFromFile("DotFiles/TSM4x4.txt");
     result = graph_algorithms.SolveTravelingSalesmanProblem(graph);
+    int expected_vertices2[] = {1, 2, 4, 3, 1};
+    EXPECT_DOUBLE_EQ(result.distance, 80.0);
+    for (int i = 0; i < 5; i++) {
+        EXPECT_EQ(expected_vertices2[i], result.vertices[i]);
+    }
+}
+
+TEST(TSMSolverTest, BruteForce) {
+    Graph graph;
+    GraphAlgorithms graph_algorithms;
+    graph.GetMatrixFromFile("DotFiles/TSM6x6.txt");
+    TsmResult result = graph_algorithms.SolveTSMBruteForceMethod(graph);
+    int expected_vertices[] = {1, 3, 5, 2, 6, 4, 1};
+    EXPECT_DOUBLE_EQ(result.distance, 94.0);
+    for (int i = 0; i < 7; i ++) {
+        EXPECT_EQ(expected_vertices[i], result.vertices[i]);
+    }
+
+    graph.GetMatrixFromFile("DotFiles/TSM4x4.txt");
+    result = graph_algorithms.SolveTSMBruteForceMethod(graph);
     int expected_vertices2[] = {1, 2, 4, 3, 1};
     EXPECT_DOUBLE_EQ(result.distance, 80.0);
     for (int i = 0; i < 5; i ++) {

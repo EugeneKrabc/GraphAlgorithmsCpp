@@ -19,14 +19,14 @@ std::vector<int> TSMBranchAndBoundSolver::GetFinalPath() {
     return final_path_;
 }
 
-void TSMBranchAndBoundSolver::CopyToFinal(std::vector<int> curr_path) {
+void TSMBranchAndBoundSolver::CopyToFinal(std::vector<int> &curr_path) {
     for (int i = 0 ; i < curr_path.size(); i++) {
         final_path_[i] = curr_path[i] + 1;
     }
     final_path_[nmb_of_graph_] = curr_path[0] + 1;
 }
 
-int TSMBranchAndBoundSolver::FirstMin(S21Matrix adj, int i) {
+int TSMBranchAndBoundSolver::FirstMin(S21Matrix &adj, int i) {
     int min = INT32_MAX;
     for (int j = 0; j < nmb_of_graph_; j++) {
         if (adj(i, j) < min && i != j) {
@@ -36,7 +36,7 @@ int TSMBranchAndBoundSolver::FirstMin(S21Matrix adj, int i) {
     return min;
 }
 
-int TSMBranchAndBoundSolver::SecondMin(S21Matrix adj, int i) {
+int TSMBranchAndBoundSolver::SecondMin(S21Matrix &adj, int i) {
     int first = INT32_MAX, second = INT32_MAX;
     for (int j = 0; j < nmb_of_graph_; j++) {
         if (i == j)
@@ -52,8 +52,8 @@ int TSMBranchAndBoundSolver::SecondMin(S21Matrix adj, int i) {
     return second;
 }
 
-void TSMBranchAndBoundSolver::TSPRec(S21Matrix adj, int curr_bound, int curr_weight, int level,
-                                     std::vector<int> curr_path) {
+void TSMBranchAndBoundSolver::TSPRec(S21Matrix &adj, int curr_bound, int curr_weight, int level,
+                                     std::vector<int> &curr_path) {
     if (level == nmb_of_graph_) {
         if (adj(curr_path[level - 1], curr_path[0]) != 0) {
             int curr_res = curr_weight + adj(curr_path[level - 1], curr_path[0]);
@@ -96,7 +96,7 @@ void TSMBranchAndBoundSolver::TSPRec(S21Matrix adj, int curr_bound, int curr_wei
     }
 }
 
-void TSMBranchAndBoundSolver::TSP(S21Matrix adj) {
+void TSMBranchAndBoundSolver::TSP(S21Matrix &adj) {
     std::vector<int> curr_path = std::vector<int>(nmb_of_graph_, -1);
     int curr_bound = 0;
 
