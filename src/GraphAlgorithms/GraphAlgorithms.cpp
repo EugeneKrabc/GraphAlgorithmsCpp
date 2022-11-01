@@ -7,35 +7,12 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
         return TsmResult({}, Status::OUT_OF_RANGE);
     }
     TSMAntAlgorithmSolver AntAlgorithm(graph.GetMatrix());
-    AntAlgorithm.MainIteration();
     return AntAlgorithm.GetAnswer();
 }
 
 TsmResult GraphAlgorithms::SolveTSMBruteForceMethod(Graph &graph) {
-    S21Matrix matrix = graph.GetMatrix();
-    std::vector<int> vertex, min_path;
-    for (int i = 1; i < matrix.get_cols(); ++i) {
-        vertex.push_back(i);
-    }
-    int min_weight = std::numeric_limits<int>::max();
-    while (std::next_permutation(vertex.begin(), vertex.end())) {
-        int cur_weight = 0;
-        std::vector<int> cur_path;
-        int k = 0;
-        for (size_t i = 0; i < vertex.size(); i++) {
-            cur_weight += matrix(k, vertex[i]);
-            cur_path.push_back(k + 1);
-            k = vertex[i];
-        }
-        cur_weight += matrix(k, 0);
-        cur_path.push_back(k + 1);
-        if (min_weight > cur_weight) {
-            min_weight = cur_weight;
-            min_path = cur_path;
-        }
-    }
-    min_path.push_back(1);
-    return TsmResult(min_path, min_weight);
+    TSMBruteForce brute_force(graph.GetMatrix());
+    return brute_force.GetAnswer();
 }
 
 std::vector<int> GraphAlgorithms::DepthFirstSearch(Graph &graph, int start_vertex) {
@@ -200,11 +177,8 @@ S21Matrix GraphAlgorithms::GetLeastSpanningTree(Graph &graph) {
 }
 
 TsmResult GraphAlgorithms::SolveTSMBranchAndBoundMethod(Graph &graph) {
-    branch_and_bound_solver = new TSMBranchAndBoundSolver(graph.GetMatrix().get_cols());
-    branch_and_bound_solver->TSP(graph.GetMatrix());
-    TsmResult result(branch_and_bound_solver->GetFinalPath(), branch_and_bound_solver->GetLengthResult());
-    delete branch_and_bound_solver;
-    return result;
+    TSMBranchAndBoundSolver branch_and_bound_solver = TSMBranchAndBoundSolver(graph.GetMatrix());
+    return branch_and_bound_solver.GetAnswer();
 }
 
 }  // namespace s21

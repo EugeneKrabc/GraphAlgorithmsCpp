@@ -3,13 +3,12 @@
 
 #include <vector>
 #include <set>
-#include <algorithm>
 #include "../DataStructures/Queue/Queue.h"
 #include "../DataStructures/Stack/Stack.h"
 #include "../Graph/Graph.h"
-#include "../DataStructures/AbstractList.h"
 #include "BranchAndBoundAlgorithmForTSM/TSMBranchAndBoundSolver.h"
 #include "AntAlgorithmForTSM/TSMAntAlgorithmSolver.h"
+#include "../GraphAlgorithms/TSMBruteForce.h"
 
 namespace s21 {
 
@@ -20,7 +19,6 @@ enum Status {
 };
 
 enum SearchType { DepthFirstSearch = 1, BreadthFirstSearch = 2 };
-
 
 class GraphAlgorithms {
  public:
@@ -42,8 +40,6 @@ class GraphAlgorithms {
     void debug_print_stack(Stack stack);
     std::vector<int> SearchAlgo(Graph &graph, int start_vertex, SearchType search_type);
     int big_number_ = 1000000;
-
-    TSMBranchAndBoundSolver *branch_and_bound_solver;
 };
 
 }  // namespace s21

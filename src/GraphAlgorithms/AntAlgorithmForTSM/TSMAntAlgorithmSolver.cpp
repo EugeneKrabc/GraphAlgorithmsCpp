@@ -2,13 +2,13 @@
 
 namespace s21 {
 
-    TSMAntAlgorithmSolver::TSMAntAlgorithmSolver(S21Matrix &matrix) : AbstractTSM(matrix) {
+    TSMAntAlgorithmSolver::TSMAntAlgorithmSolver(S21Matrix &matrix) : AbstractTSMSolver(matrix) {
         this->matrix_ = matrix;
         count_of_nodes_ = matrix.get_rows();
-        FillEmptyElements();
     }
 
     TsmResult TSMAntAlgorithmSolver::GetAnswer() {
+        MainIteration();
         return shortest_path_;
     }
 
