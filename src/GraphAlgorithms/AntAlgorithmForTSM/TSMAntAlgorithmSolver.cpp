@@ -12,7 +12,7 @@ namespace s21 {
         return shortest_path_;
     }
 
-    void TSMAntAlgorithmSolver::PerformAntAlgorithm() {
+    void TSMAntAlgorithmSolver::MainIteration() {
         shortest_path_ = TsmResult({}, -1.0);
         pheromones_ = pheromones_delta_ = event_ = S21Matrix(count_of_nodes_, count_of_nodes_);
         for (int i = 0; i < matrix_.get_rows(); i++) {
@@ -22,12 +22,12 @@ namespace s21 {
                 }
             }
         }
-        for (size_t iteration = 0; iteration < 1; iteration++) {
+        for (size_t iteration = 0; iteration < 40; iteration++) {
             if (iteration > 0) {
                 ApplyDeltaToPheromones();
             }
             TsmResult cur_path = AntColonyAlgorithm();
-            if (iteration >= 0 && shortest_path_.distance == -1.0 || cur_path.distance < shortest_path_.distance) {
+            if (shortest_path_.distance == -1.0 || cur_path.distance < shortest_path_.distance) {
                 shortest_path_ = cur_path;
             }
         }
@@ -46,10 +46,11 @@ namespace s21 {
             }
         }
     }
-//#include <iostream>
+
     TsmResult TSMAntAlgorithmSolver::AntColonyAlgorithm() {
         const int ants = 200;
-        for (int i = 0; i < ants; i++) {
+        TsmResult min({}, -1.0);
+        for (int ant = 0; ant < ants; ant++) {
             std::vector<int> ants_path(ants), visited;
             std::set<int> available_nodes;
             for (int i = 0; i < count_of_nodes_; i++)
@@ -57,11 +58,6 @@ namespace s21 {
             int current_pos = 0;
             while (true) {
                 visited.push_back(current_pos);
-                for (auto iter : visited) {
-                    printf("%d ", iter);
-//                    std::cout << iter << "\n";
-                }
-                printf("\n");
                 available_nodes.erase(current_pos);
                 if (available_nodes.size() == 0)
                     break;
@@ -73,11 +69,15 @@ namespace s21 {
                 }
                 int old_pos = current_pos;
                 current_pos = GetNextNode(current_pos, available_nodes);
-                ants_path[i] += matrix_(old_pos, current_pos);
+                ants_path[ant] += matrix_(old_pos, current_pos);
             }
-            IncreaseDelta(ants_path[i], visited);
+            TsmResult tmp = GetFullPath(visited);
+            if (min.distance == -1.0 || tmp.distance < min.distance) {
+                min = tmp;
+            }
+            IncreaseDelta(ants_path[ant], visited);
         }
-        return GetFullPath();
+        return min;
     }
 
     double TSMAntAlgorithmSolver::GetEventPossibility(int rows, int cols, std::set<int> &nodes) {
@@ -133,27 +133,15 @@ namespace s21 {
         }
     }
 
-    TsmResult TSMAntAlgorithmSolver::GetFullPath() {
-        double cur_path = 0;
+    TsmResult TSMAntAlgorithmSolver::GetFullPath(std::vector<int> &visited) {
+        double cur_path = 0.0;
 
-        std::vector<int> visited = { 0 };
         S21Matrix available(pheromones_);
         int cur_pos = 0;
-        while (visited.size() < matrix_.get_cols()) {
-            int max = -1;
-            for (int i = 0; i < matrix_.get_cols(); i++) {
-                if (available(cur_pos, i) > 0.0 &&
-                    (max == -1 || available(cur_pos, i) > available(cur_pos, max) ||
-                     available(i, cur_pos) > available(cur_pos, max))) {
-                    max = i;
-                }
-            }
-            cur_path += matrix_(cur_pos, max);
-            available(cur_pos, max) = 0.0;
-            cur_pos = max;
-            visited.push_back(max);
+        for (int i = 1; i < visited.size(); i++) {
+            cur_path += matrix_(cur_pos, visited[i]);
+            cur_pos = visited[i];
         }
-
         // Reversed path from last visited node to home
         TsmResult reversed = GetShortestPath(visited.back() + 1, 1);
         for (int i = reversed.vertices.size() - 2; i >= 0; i--) {

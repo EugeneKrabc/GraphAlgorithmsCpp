@@ -7,7 +7,7 @@ TsmResult GraphAlgorithms::SolveTravelingSalesmanProblem(Graph &graph) {
         return TsmResult({}, Status::OUT_OF_RANGE);
     }
     TSMAntAlgorithmSolver AntAlgorithm(graph.GetMatrix());
-    AntAlgorithm.PerformAntAlgorithm();
+    AntAlgorithm.MainIteration();
     return AntAlgorithm.GetAnswer();
 }
 

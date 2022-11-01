@@ -12,7 +12,7 @@ namespace s21 {
     public:
 
         TSMAntAlgorithmSolver(S21Matrix &matrix);
-        void PerformAntAlgorithm();
+        void MainIteration();
         TsmResult GetAnswer();
 
     private:
@@ -26,10 +26,9 @@ namespace s21 {
         int GetNextNode(int cur_pos, std::set<int> &nodes);
         double LastPositiveEvent(std::vector<double> &event_vec, int j);
         void IncreaseDelta(int path_of_cur, std::vector<int> &visited);
-        TsmResult GetFullPath();
+        TsmResult GetFullPath(std::vector<int> &visited);
         TsmResult GetShortestPath(int vertex1, int vertex2);
     };
 }
-
 
 #endif  // GRAPHALGORITHMSCPP_ANTALGORITHMFORTSM_H

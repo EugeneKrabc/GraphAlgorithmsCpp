@@ -20,9 +20,9 @@ void ConsoleEngine::start() {
         }
 
         if (answer == 1) {
-            cout << "Enter path to file: ";
-            cin >> read_path_;
-            graph_.GetMatrixFromFile(read_path_);
+//            cout << "Enter path to file: ";
+//            cin >> read_path_;
+            graph_.GetMatrixFromFile("DotFiles/example.txt");
         } else if (answer == 2) {
             PrintResultVector(graph_algorithms_.DepthFirstSearch(graph_,
                     RequestNmbFromUser("Enter start vertex: ")));
