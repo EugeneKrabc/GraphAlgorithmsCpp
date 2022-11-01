@@ -15,35 +15,51 @@ void ConsoleEngine::start() {
         std::string input;
         cin >> input;
         cout << std::endl;
-        if (input.size() == 1 && input.at(0) >= '0' && input.at(0) <= '7') {
+        if (input.size() == 1 && input.at(0) >= '0' && input.at(0) <= '9') {
             answer = stoi(input);
         }
 
-        if (answer == 1) {
-            cout << "Enter path to file: ";
-            cin >> read_path_;
-            graph_.GetMatrixFromFile(read_path_);
-        } else if (answer == 2) {
-            PrintResultVector(graph_algorithms_.DepthFirstSearch(graph_,
-                    RequestNmbFromUser("Enter start vertex: ")));
-        } else if (answer == 3) {
-            PrintResultVector(graph_algorithms_.BreadthFirstSearch(
-                graph_, RequestNmbFromUser("Enter start vertex: ")));
-        } else if (answer == 4) {
-            PrintResultVector({graph_algorithms_.GetShortestPathBetweenVertices(
-                graph_, RequestNmbFromUser("Enter start vertex: "),
-                RequestNmbFromUser("Enter end vertex: "))});
-        } else if (answer == 5) {
-            PrintResultMatrix(graph_algorithms_.GetShortestPathsBetweenAllVertices(
-                graph_));
-        } else if (answer == 6) {
-            cout << "Not implemented\n";
-        } else if (answer == 7) {
-            PrintTSM(graph_algorithms_.SolveTravelingSalesmanProblem(graph_));
-        } else if (answer == 0) {
-            break;
-        } else {
-            cout << "Invalid menu option\n";
+        switch (answer) {
+            int start_vertex, end_vertex;
+            case LOAD_GRAPH_FROM_FILE:
+                cout << "Enter path to file: ";
+                cin >> read_path_;
+                graph_.GetMatrixFromFile(read_path_);
+                break;
+            case PERFORM_DFS:
+                start_vertex = RequestNmbFromUser("Enter start vertex: ");
+                PrintResultVector(graph_algorithms_.DepthFirstSearch(graph_, start_vertex));
+                break;
+            case PERFORM_BFS:
+                start_vertex = RequestNmbFromUser("Enter start vertex: ");
+                PrintResultVector(graph_algorithms_.BreadthFirstSearch(graph_, start_vertex));
+                break;
+            case FIND_SHORTEST_PATH_BETWEEN_TWO_V:
+                start_vertex = RequestNmbFromUser("Enter start vertex: ");
+                end_vertex = RequestNmbFromUser("Enter end vertex: ");
+                PrintResultVector({
+                    graph_algorithms_.GetShortestPathBetweenVertices(graph_, start_vertex,end_vertex)
+                });
+                break;
+            case FIND_SHORTEST_PATH_BETWEEN_ALL_V:
+                PrintResultMatrix(graph_algorithms_.GetShortestPathsBetweenAllVertices(graph_));
+                break;
+            case FIND_MINIMAL_SPANNING_TREE:
+                PrintResultMatrix(graph_algorithms_.GetLeastSpanningTree(graph_));
+                break;
+            case SOLVE_TSM_ANT_METHOD:
+                PrintTSM(graph_algorithms_.SolveTravelingSalesmanProblem(graph_));
+                break;
+            case DO_RESEARCH_ON_TSM_ALGORITHMS:
+                cout << "Not implemented" << std::endl;
+                break;
+            case WRITE_GRAPH_TO_FILE:
+                cout << "Not implemented" << std::endl;
+                break;
+            case EXIT:
+                return;
+            default:
+                cout << "Invalid menu option" << std::endl;
         }
     }
 }
