@@ -4,10 +4,10 @@
 
 namespace s21 {
 
-    TsmResult TSMBranchAndBoundSolver::GetAnswer() {
-        TSP();
-        return {final_path_, final_res_};
-    }
+TsmResult TSMBranchAndBoundSolver::GetAnswer() {
+    TSP();
+    return {final_path_, final_res_};
+}
 
 TSMBranchAndBoundSolver::TSMBranchAndBoundSolver(S21Matrix &matrix) : AbstractTSMSolver(matrix) {
     matrix_ = matrix;
@@ -18,7 +18,7 @@ TSMBranchAndBoundSolver::TSMBranchAndBoundSolver(S21Matrix &matrix) : AbstractTS
 }
 
 void TSMBranchAndBoundSolver::CopyToFinal(std::vector<int> &curr_path) {
-    for (int i = 0 ; i < curr_path.size(); i++) {
+    for (int i = 0; i < curr_path.size(); i++) {
         final_path_[i] = curr_path[i] + 1;
     }
     final_path_[nmb_of_graph_] = curr_path[0] + 1;
@@ -37,8 +37,7 @@ int TSMBranchAndBoundSolver::FirstMin(int i) {
 int TSMBranchAndBoundSolver::SecondMin(int i) {
     int first = INT32_MAX, second = INT32_MAX;
     for (int j = 0; j < nmb_of_graph_; j++) {
-        if (i == j)
-            continue;
+        if (i == j) continue;
 
         if (matrix_(i, j) <= first) {
             second = first;
@@ -69,9 +68,9 @@ void TSMBranchAndBoundSolver::TSPRec(int curr_bound, int curr_weight, int level,
             curr_weight += matrix_(curr_path[level - 1], i);
 
             if (level == 1) {
-                curr_bound -= ((FirstMin(curr_path[level - 1]) + FirstMin(i))/ 2);
+                curr_bound -= ((FirstMin(curr_path[level - 1]) + FirstMin(i)) / 2);
             } else {
-                curr_bound -= ((SecondMin(curr_path[level - 1]) + FirstMin(i))/ 2);
+                curr_bound -= ((SecondMin(curr_path[level - 1]) + FirstMin(i)) / 2);
             }
 
             if (curr_bound + curr_weight < final_res_) {
@@ -105,7 +104,7 @@ void TSMBranchAndBoundSolver::TSP() {
     if (curr_bound == 1) {
         curr_bound = curr_bound / 2 + 1;
     } else {
-        curr_bound = curr_bound/2;
+        curr_bound = curr_bound / 2;
     }
 
     visited_[0] = true;
@@ -114,4 +113,4 @@ void TSMBranchAndBoundSolver::TSP() {
     TSPRec(curr_bound, 0, 1, curr_path);
 }
 
-}
+}  // namespace s21

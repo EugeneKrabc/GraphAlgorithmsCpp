@@ -9,7 +9,7 @@ namespace s21 {
 #define EPSILON 1e-15
 
 class S21Matrix {
- private:
+private:
     int _rows, _cols;
     double **_matrix;
 
@@ -17,7 +17,7 @@ class S21Matrix {
     void allocate_matrix(int rows, int cols);
     void copy_matrix_elements(const S21Matrix &other);
 
- public:
+public:
     S21Matrix();
     S21Matrix(int rows, int cols);
     S21Matrix(const S21Matrix &other);
@@ -50,6 +50,6 @@ class S21Matrix {
     double &operator()(const int i, const int j);
 };
 
-}
+}  // namespace s21
 
-#endif //A2_SIMPLENAVIGATOR_V1_0_0_MASTER_S21_MATRIX_OOP_H
+#endif  // A2_SIMPLENAVIGATOR_V1_0_0_MASTER_S21_MATRIX_OOP_H

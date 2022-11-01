@@ -21,8 +21,8 @@ void ConsoleEngine::start() {
         switch (answer) {
             int start_vertex, end_vertex;
             case LOAD_GRAPH_FROM_FILE:  // 1
-//                cout << "Enter path to file: ";
-//                cin >> read_path_;
+                                        //                cout << "Enter path to file: ";
+                                        //                cin >> read_path_;
                 graph_.GetMatrixFromFile("DotFiles/example.txt");
                 break;
             case PERFORM_DFS:  // 2
@@ -132,7 +132,8 @@ void ConsoleEngine::ResearchTSMAlgorithmsPerformance(Graph &graph, int count) {
 
     if (graph.GetMatrix().get_rows() > 12) {
         scanf("%*[^\n]");
-        cout << "Graph has more than 12 vertices, it might take a long time(may be forever), are you sure?(y or n) ";
+        cout << "Graph has more than 12 vertices, it might take a long time(may be forever), are you sure?(y "
+                "or n) ";
         char answer;
         cin >> answer;
         if (answer == 'n') {
@@ -145,9 +146,7 @@ void ConsoleEngine::ResearchTSMAlgorithmsPerformance(Graph &graph, int count) {
     solver[1] = new TSMBranchAndBoundSolver(graph.GetMatrix());
     solver[2] = new TSMBruteForce(graph.GetMatrix());
 
-    char MethodsName[3][50] = { "Ant colony\0",
-                              "Branch and bound\0",
-                              "Brute force\0"};
+    char MethodsName[3][50] = {"Ant colony\0", "Branch and bound\0", "Brute force\0"};
 
     cout << "Research has been started\n\n";
     for (int i = 0; i < 3; i++) {

@@ -2,13 +2,9 @@
 
 namespace s21 {
 
-Queue::Queue() : AbstractList() {
-    head_ = nullptr;
-}
+Queue::Queue() : AbstractList() { head_ = nullptr; }
 
-Queue* Queue::init() {
-    return new Queue();
-}
+Queue *Queue::init() { return new Queue(); }
 
 void Queue::push(int value) {
     if (head_ == nullptr) {
@@ -40,8 +36,6 @@ int Queue::peek() const {
     return head_->value;
 }
 
-bool Queue::empty() const {
-    return head_ == nullptr;
-}
+bool Queue::empty() const { return head_ == nullptr; }
 
-} // namespace s21
+}  // namespace s21

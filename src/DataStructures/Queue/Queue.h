@@ -5,19 +5,18 @@
 
 namespace s21 {
 
-class Queue: public AbstractList {
- public:
+class Queue : public AbstractList {
+public:
     static Queue* init();
     void push(int value);
     int pop();
     int peek() const;
     bool empty() const;
 
- private:
+private:
     Queue();
 };
 
-}
+}  // namespace s21
 
-
-#endif //A2_SIMPLENAVIGATOR_V1_0_0_MASTER_QUEUE_H
+#endif  // A2_SIMPLENAVIGATOR_V1_0_0_MASTER_QUEUE_H
