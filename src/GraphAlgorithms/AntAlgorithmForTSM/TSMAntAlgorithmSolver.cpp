@@ -11,23 +11,6 @@ TsmResult TSMAntAlgorithmSolver::GetAnswer() {
     MainIteration();
     return shortest_path_;
 }
-
-void TSMAntAlgorithmSolver::FillEmptyNodes() {
-        double max = matrix_(0, 0);
-        for (int i = 0; i < matrix_.get_rows(); i++) {
-            for (int j = 0; j < matrix_.get_cols(); j++) {
-                max = std::max(max, matrix_(i, j));
-            }
-        }
-        for (int i = 0; i < matrix_.get_rows(); i++) {
-            for (int j = 0; j < matrix_.get_cols(); j++) {
-                if (i != j && matrix_(i, j) == 0.0) {
-                    max += 10.0;
-                    matrix_(i, j) = max;
-                }
-            }
-        }
-}
     
 void TSMAntAlgorithmSolver::MainIteration() {
     shortest_path_ = TsmResult({}, -1.0);
