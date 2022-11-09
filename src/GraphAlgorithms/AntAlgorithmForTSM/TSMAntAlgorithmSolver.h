@@ -28,6 +28,7 @@ private:
     void IncreaseDelta(int path_of_cur, std::vector<int> &visited);
     TsmResult GetFullPath(std::vector<int> &visited);
     TsmResult GetShortestPath(int vertex1, int vertex2);
+    void FillEmptyNodes();
 };
 }  // namespace s21
 
