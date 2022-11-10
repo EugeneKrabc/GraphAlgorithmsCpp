@@ -22,7 +22,6 @@ void TSMAntAlgorithmSolver::MainIteration() {
             }
         }
     }
-    FillEmptyNodes();
     for (size_t iteration = 0; iteration < 40; iteration++) {
         if (iteration > 0) {
             ApplyDeltaToPheromones();
