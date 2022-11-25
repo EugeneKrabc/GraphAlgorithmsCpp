@@ -1,8 +1,45 @@
-# GraphAlgorithmsCpp
+# GraphAlgorithms
+1. [In English](#description)
+2. [На русском](#описание)
+### Description
+Implementation of algorithms for working with graphs:
+* graph traversal in depth and width
+* search for shortest paths in the graph
+* search for the minimum spanning tree
+* the traveling salesman's task in 3 ways:
+    * full bust
+    * ant algorithm
+    * branch and boundary method
 
-В этом проекте реализованы различные алгоритмы с графами, взаимодействие с пользователем осуществляется через интрфейс командной строки.
+### Instructions
+The program is designed to run on macOS using make utilities.
+```
+git clone git@github.com:abceff/MazeAndCave.git
+cd src
+make demo  # console interface for working with algorithms
+make test  # running tests
+```
+***
 
-## Функционал
+### Описание
+Реализация алгоритмов для работы с графами:
+* обход графа в глубину и в ширину
+* поиск кратчайших путей в графе
+* поиск минимального остовного дерева
+* задача коммивояжера 3 способами:
+  * полный перебор
+  * муравьиный алгоритм
+  * метод ветвей и границ
+
+### Команды
+Программа предназначена для выполнения на macOS с помощью утилит make.
+```
+git clone git@github.com:abceff/GraphAlgorithms.git
+cd src
+make demo  # консольный интерфейс для работы с алгоритмами
+make test  # запуск тестов
+```
+## Консольное меню
     1. Загрузка графа из файла (Нужно укзать путь к файлу, в котром содержиться матрица смежности. представлющая граф). Все дальнейшие функции будут работать с загруженным графом.
     2. Выполнение поиска в глубину в графе от заданной вершины.
     3. Выполнение поиска в ширину в графе от заданной вершины.
